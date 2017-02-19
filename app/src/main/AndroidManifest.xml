@@ -18,6 +18,13 @@
 			</intent-filter>
 		</receiver>
 
+		<activity android:name=".activity.MainActivity" android:theme="@style/AppTheme">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+
 		<meta-data android:name="me.anon.grow.ADDON_NAME" android:value="@string/app_name" />
 		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="${versionName}" />
 	</application>
