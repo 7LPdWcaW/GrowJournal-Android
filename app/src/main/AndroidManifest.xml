@@ -12,6 +12,13 @@
 		android:icon="@mipmap/ic_launcher"
 		android:theme="@style/AppTheme"
 	>
+		<receiver android:name=".receiver.GrowTrackerReceiver" android:exported="true" android:enabled="true">
+			<intent-filter>
+				<action android:name="me.anon.grow.ACTION_SAVE_PLANTS" />"
+			</intent-filter>
+		</receiver>
 
+		<meta-data android:name="me.anon.grow.ADDON_NAME" android:value="@string/app_name" />
+		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="${versionName}" />
 	</application>
 </manifest>
