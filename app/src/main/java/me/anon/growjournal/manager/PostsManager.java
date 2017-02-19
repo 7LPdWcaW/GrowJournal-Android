@@ -2,6 +2,7 @@ package me.anon.growjournal.manager;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
 import me.anon.growjournal.model.Post;
 
 /**
@@ -16,7 +17,7 @@ public class PostsManager
 		return instance;
 	}
 
-	private ArrayList<Post> posts = new ArrayList<>();
+	@Getter private ArrayList<Post> posts = new ArrayList<>();
 
 	public void addPost(Post post)
 	{
