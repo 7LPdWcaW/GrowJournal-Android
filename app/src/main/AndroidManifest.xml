@@ -25,6 +25,8 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name=".activity.ManagePostActivity" android:theme="@style/AppTheme.DarkStatus" android:windowSoftInputMode="adjustResize" />
+
 		<meta-data android:name="me.anon.grow.ADDON_NAME" android:value="@string/app_name" />
 		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="${versionName}" />
 	</application>
