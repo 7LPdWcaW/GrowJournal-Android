@@ -22,7 +22,6 @@ import android.text.Layout;
 import android.text.style.StrikethroughSpan;
 import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
-import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -558,11 +557,11 @@ public class RichEditText extends EditText implements EditorActionModeListener
 		((BulletEffect)BULLET).updateBullets(this);
 	}
 
-	private static class UnderlineEffect extends SimpleBooleanEffect<UnderlineSpan>
+	private static class UnderlineEffect extends SimpleBooleanEffect<NonAndroidUnderlineSpan>
 	{
 		UnderlineEffect()
 		{
-			super(UnderlineSpan.class);
+			super(NonAndroidUnderlineSpan.class);
 		}
 	}
 
