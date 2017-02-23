@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import com.commonsware.cwac.richedit.Effect;
 import com.commonsware.cwac.richedit.RichEditText;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,8 +47,7 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 	private RichEditText editor;
 
-	private ArrayList<Effect> effects = new ArrayList<>();
-	private int effectStart = -1;
+	private LinkedHashMap<Effect, Integer[]> effects = new LinkedHashMap<>();
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
@@ -84,13 +83,18 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 		editor.addTextChangedListener(new TextWatcher()
 		{
+			int beforeLength = 0;
 			@Override public void beforeTextChanged(CharSequence s, int start, int count, int after)
 			{
+				beforeLength = s.length();
 			}
 
 			@Override public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
-				applyStyles(start, count);
+				int diff = s.length() - beforeLength;
+				if (diff < 0) return;
+
+				applyStyles(diff);
 			}
 
 			@Override public void afterTextChanged(Editable s)
@@ -102,34 +106,35 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 	@Override public void onClick(View v)
 	{
+		v.setSelected(!v.isSelected());
+
 		if (v == formatBold)
 		{
-			if (effects.contains(RichEditText.BOLD))
+			if (effects.keySet().contains(RichEditText.BOLD))
 			{
 				effects.remove(RichEditText.BOLD);
 			}
 			else
 			{
-				effects.add(RichEditText.BOLD);
+				effects.put(RichEditText.BOLD, new Integer[]{editor.getSelectionStart(), editor.length()});
 			}
-
-			effectStart = editor.getSelectionStart();
-		}
-
-		if (effects.size() == 0)
-		{
-			effectStart = -1;
 		}
 	}
 
-	private void applyStyles(int start, int count)
+	private void applyStyles(int count)
 	{
-		for (Effect effect : effects)
+		if (count <= 0) return;
+
+		for (Effect effect : effects.keySet())
 		{
-			editor.setSelection(start, start + count);
+			int start = effects.get(effect)[0];
+			int originalLength = effects.get(effect)[1];
+			int diff = editor.length() - originalLength;
+
+			editor.setSelection(start, start + diff);
 			editor.applyEffect(effect, true);
 
-			editor.setSelection(start + count);
+			editor.setSelection(start + diff);
 		}
 	}
 }
