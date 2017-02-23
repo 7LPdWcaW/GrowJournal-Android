@@ -14,8 +14,10 @@
 
 package com.commonsware.cwac.richedit;
 
+import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
 
 import com.commonsware.cwac.richtextutils.Selection;
 
@@ -68,6 +70,9 @@ abstract public class AbsoluteSizeEffect extends Effect<Integer>
 		{
 			str.setSpan(new AbsoluteSizeSpan(size, isDip()), selection.getStart(),
 				selection.getEnd(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			str.setSpan(new StyleSpan(Typeface.BOLD), selection.getStart(), selection.getEnd(),
+				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 	}
 

@@ -103,6 +103,55 @@
 					style="@style/EditorButton"
 				/>
 
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/heading_sizes"
+					android:orientation="horizontal"
+					android:background="#f1f1f1"
+					android:visibility="gone"
+				>
+					<Button
+						android:layout_width="48dp"
+						android:layout_height="48dp"
+						android:id="@+id/heading_1"
+						android:text="h1"
+						android:textSize="14dp"
+						android:contentDescription="Heading 1"
+						style="@style/EditorButton"
+					/>
+
+					<Button
+						android:layout_width="48dp"
+						android:layout_height="48dp"
+						android:id="@+id/heading_2"
+						android:text="h2"
+						android:textSize="14dp"
+						android:contentDescription="Heading 2"
+						style="@style/EditorButton"
+					/>
+
+					<Button
+						android:layout_width="48dp"
+						android:layout_height="48dp"
+						android:id="@+id/heading_3"
+						android:text="h3"
+						android:textSize="14dp"
+						android:contentDescription="Heading 3"
+						style="@style/EditorButton"
+					/>
+
+					<Button
+						android:layout_width="48dp"
+						android:layout_height="48dp"
+						android:id="@+id/heading_4"
+						android:text="h4"
+						android:textSize="14dp"
+						android:contentDescription="Heading 4"
+						style="@style/EditorButton"
+					/>
+				</LinearLayout>
+
 				<ImageButton
 					android:layout_width="48dp"
 					android:layout_height="48dp"
@@ -112,14 +161,14 @@
 					style="@style/EditorButton"
 				/>
 
-				<ImageButton
-					android:layout_width="48dp"
-					android:layout_height="48dp"
-					android:id="@+id/number_list"
-					android:src="@drawable/ic_format_list_numbered_black_24dp"
-					android:contentDescription="Numbered list"
-					style="@style/EditorButton"
-				/>
+				<!--<ImageButton-->
+					<!--android:layout_width="48dp"-->
+					<!--android:layout_height="48dp"-->
+					<!--android:id="@+id/number_list"-->
+					<!--android:src="@drawable/ic_format_list_numbered_black_24dp"-->
+					<!--android:contentDescription="Numbered list"-->
+					<!--style="@style/EditorButton"-->
+				<!--/>-->
 			</LinearLayout>
 		</LinearLayout>
 	</HorizontalScrollView>
