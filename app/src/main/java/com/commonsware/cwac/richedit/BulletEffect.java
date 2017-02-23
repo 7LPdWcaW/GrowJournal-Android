@@ -30,6 +30,11 @@ public class BulletEffect extends Effect<Boolean>
 		return (getBulletSpans(str, selection).length > 0);
 	}
 
+	private BulletSpan createSpan()
+	{
+		return new BulletSpan(18);
+	}
+
 	@Override
 	public Boolean valueInSelection(RichEditText editor)
 	{
@@ -51,7 +56,7 @@ public class BulletEffect extends Effect<Boolean>
 		{
 			for (Selection chunk : selection.buildSelectionsForLines(str))
 			{
-				str.setSpan(new BulletSpan(), chunk.getStart(),
+				str.setSpan(createSpan(), chunk.getStart(),
 					chunk.getEnd(),
 					Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
@@ -72,7 +77,7 @@ public class BulletEffect extends Effect<Boolean>
 		{
 			for (Selection chunk : selection.buildSelectionsForLines(str))
 			{
-				str.setSpan(new BulletSpan(), chunk.getStart(),
+				str.setSpan(createSpan(), chunk.getStart(),
 					chunk.getEnd(),
 					Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
