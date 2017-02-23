@@ -7,25 +7,148 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical"
 >
-	<LinearLayout
+	<HorizontalScrollView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/button_container"
-		android:orientation="horizontal"
 		android:layout_alignParentBottom="true"
-
 		android:background="#f0f0f0"
 	>
-		<ImageButton
-			android:layout_width="48dp"
-			android:layout_height="48dp"
-			android:src="@drawable/ic_action_format_dark"
-			android:tint="#424242"
-			android:padding="12dp"
-			android:scaleType="fitCenter"
-			android:background="?android:selectableItemBackground"
-		/>
-	</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:showDividers="middle"
+			android:divider="@drawable/menu_divider"
+			android:dividerPadding="12dp"
+		>
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:orientation="horizontal"
+			>
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/bold"
+					android:src="@drawable/ic_format_bold_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Bold"
+				/>
+
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/underline"
+					android:src="@drawable/ic_format_underlined_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Underline"
+				/>
+
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/italic"
+					android:src="@drawable/ic_format_italic_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Italic"
+				/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:orientation="horizontal"
+			>
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/link"
+					android:src="@drawable/ic_insert_link_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Insert link"
+				/>
+
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/image"
+					android:src="@drawable/ic_insert_photo_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Insert image"
+				/>
+
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/attach"
+					android:src="@drawable/ic_attachment_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Attach"
+				/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:orientation="horizontal"
+			>
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/heading"
+					android:src="@drawable/ic_format_size_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Heading"
+				/>
+
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/bullet_list"
+					android:src="@drawable/ic_format_list_bulleted_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Bullet list"
+				/>
+
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/number_list"
+					android:src="@drawable/ic_format_list_numbered_black_24dp"
+					android:tint="#424242"
+					android:padding="12dp"
+					android:scaleType="fitCenter"
+					android:background="?android:selectableItemBackground"
+					android:contentDescription="Numbered list"
+				/>
+			</LinearLayout>
+		</LinearLayout>
+	</HorizontalScrollView>
 
 	<LinearLayout
 		android:layout_width="match_parent"
