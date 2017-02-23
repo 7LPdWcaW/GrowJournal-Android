@@ -1,9 +1,14 @@
 package me.anon.growjournal.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,7 +157,17 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 	{
 		v.setSelected(!v.isSelected());
 
-		if (v == formatBold)
+		if (v == formatImage)
+		{
+			SpannableString imageString = new SpannableString("abc");
+			Drawable test = getResources().getDrawable(R.mipmap.ic_launcher);
+			test.setBounds(0, 0, test.getIntrinsicWidth(), test.getIntrinsicHeight());
+			ImageSpan image = new ImageSpan(test, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageString.setSpan(image, 0, 3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+			editor.getText().insert(editor.getSelectionStart(), imageString);
+		}
+		else if (v == formatBold)
 		{
 			if (editor.hasEffect(RichEditText.ABSOLUTE_SIZE))
 			{
