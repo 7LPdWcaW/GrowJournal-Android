@@ -3,6 +3,7 @@ package me.anon.growjournal.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,7 +145,24 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 		}
 		else if (v == formatLink)
 		{
+			boolean isLink = editor.hasEffect(RichEditText.URL);
+			String url = editor.getEffectValue(RichEditText.URL);
 
+			EditLinkDialogFragment dialogFragment = new EditLinkDialogFragment(url);
+			dialogFragment.setOnEditLinkListener(new EditLinkDialogFragment.OnEditLinkListener()
+			{
+				@Override public void onLinkEdited(String text, String url)
+				{
+					if (!TextUtils.isEmpty(text))
+					{
+						editor.getText().insert(editor.getSelectionStart(), text);
+						editor.setSelection(editor.getSelectionStart(), text.length());
+					}
+
+					editor.applyEffect(RichEditText.URL, url);
+				}
+			});
+			dialogFragment.show(getChildFragmentManager(), null);
 		}
 		else if (v == formatBullet)
 		{
