@@ -42,23 +42,16 @@ import me.anon.growjournal.R;
  * this editor were inspired by:
  * http://code.google.com/p/droid-writer
  */
-public class RichEditText extends EditText implements
-	EditorActionModeListener
+public class RichEditText extends EditText implements EditorActionModeListener
 {
-	public static final Effect<Boolean> BOLD =
-		new StyleEffect(Typeface.BOLD);
-	public static final Effect<Boolean> ITALIC =
-		new StyleEffect(Typeface.ITALIC);
+	public static final Effect<Boolean> BOLD = new StyleEffect(Typeface.BOLD);
+	public static final Effect<Boolean> ITALIC = new StyleEffect(Typeface.ITALIC);
 	public static final Effect<Boolean> UNDERLINE = new UnderlineEffect();
-	public static final Effect<Boolean> STRIKETHROUGH =
-		new StrikethroughEffect();
-	public static final Effect<Layout.Alignment> LINE_ALIGNMENT =
-		new LineAlignmentEffect();
-	public static final Effect<Boolean> BULLET =
-		new BulletEffect();
+	public static final Effect<Boolean> STRIKETHROUGH = new StrikethroughEffect();
+	public static final Effect<Layout.Alignment> LINE_ALIGNMENT = new LineAlignmentEffect();
+	public static final Effect<Boolean> BULLET = new BulletEffect();
 	public static final Effect<String> TYPEFACE = new TypefaceEffect();
-	public static final Effect<Boolean> SUPERSCRIPT =
-		new SuperscriptEffect();
+	public static final Effect<Boolean> SUPERSCRIPT = new SuperscriptEffect();
 	public static final Effect<Boolean> SUBSCRIPT = new SubscriptEffect();
 	public static final Effect<Float> RELATIVE_SIZE = new RelativeSizeEffect();
 	public static final Effect<Integer> ABSOLUTE_SIZE = new AbsoluteSizeEffect.Dip();
@@ -66,8 +59,7 @@ public class RichEditText extends EditText implements
 	public static final AbstractColorEffect<?> BACKGROUND = new BackgroundColorEffect();
 	public static final AbstractColorEffect<?> FOREGROUND = new ForegroundColorEffect();
 
-	private static final ArrayList<Effect<?>> EFFECTS =
-		new ArrayList<Effect<?>>();
+	private static final ArrayList<Effect<?>> EFFECTS = new ArrayList<Effect<?>>();
 	private boolean isSelectionChanging = false;
 	private OnSelectionChangedListener selectionListener = null;
 	private boolean actionModeIsShowing = false;
@@ -95,7 +87,7 @@ public class RichEditText extends EditText implements
 		EFFECTS.add(BULLET);
 
     /*
-     * Non-Boolean effects
+	 * Non-Boolean effects
      */
 		EFFECTS.add(LINE_ALIGNMENT);
 		EFFECTS.add(TYPEFACE);
@@ -566,8 +558,7 @@ public class RichEditText extends EditText implements
 		((BulletEffect)BULLET).updateBullets(this);
 	}
 
-	private static class UnderlineEffect extends
-		SimpleBooleanEffect<UnderlineSpan>
+	private static class UnderlineEffect extends SimpleBooleanEffect<UnderlineSpan>
 	{
 		UnderlineEffect()
 		{
@@ -575,8 +566,7 @@ public class RichEditText extends EditText implements
 		}
 	}
 
-	private static class StrikethroughEffect extends
-		SimpleBooleanEffect<StrikethroughSpan>
+	private static class StrikethroughEffect extends SimpleBooleanEffect<StrikethroughSpan>
 	{
 		StrikethroughEffect()
 		{
@@ -584,8 +574,7 @@ public class RichEditText extends EditText implements
 		}
 	}
 
-	private static class SuperscriptEffect extends
-		SimpleBooleanEffect<SuperscriptSpan>
+	private static class SuperscriptEffect extends SimpleBooleanEffect<SuperscriptSpan>
 	{
 		SuperscriptEffect()
 		{
@@ -593,8 +582,7 @@ public class RichEditText extends EditText implements
 		}
 	}
 
-	private static class SubscriptEffect extends
-		SimpleBooleanEffect<SubscriptSpan>
+	private static class SubscriptEffect extends SimpleBooleanEffect<SubscriptSpan>
 	{
 		SubscriptEffect()
 		{
