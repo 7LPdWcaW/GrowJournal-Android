@@ -3,8 +3,6 @@ package me.anon.growjournal.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,7 @@ import android.widget.ImageButton;
 import com.commonsware.cwac.richedit.Effect;
 import com.commonsware.cwac.richedit.RichEditText;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,8 +45,6 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 	private RichEditText editor;
 
-	private LinkedHashMap<Effect, Integer[]> effects = new LinkedHashMap<>();
-
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.post_editor_view, container, false);
@@ -81,27 +77,37 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		editor.addTextChangedListener(new TextWatcher()
+		editor.setOnSelectionChangedListener(new RichEditText.OnSelectionChangedListener()
 		{
-			int beforeLength = 0;
-			@Override public void beforeTextChanged(CharSequence s, int start, int count, int after)
+			@Override public void onSelectionChanged(int start, int end, List<Effect<?>> effects)
 			{
-				beforeLength = s.length();
-			}
+				toggleButtonsOff();
 
-			@Override public void onTextChanged(CharSequence s, int start, int before, int count)
-			{
-				int diff = s.length() - beforeLength;
-				if (diff < 0) return;
-
-				applyStyles(diff);
-			}
-
-			@Override public void afterTextChanged(Editable s)
-			{
-
+				if (effects.size() > 0)
+				{
+					for (Effect<?> effect : effects)
+					{
+						if (effect == RichEditText.BOLD)
+						{
+							formatBold.setSelected(true);
+						}
+					}
+				}
 			}
 		});
+	}
+
+	private void toggleButtonsOff()
+	{
+		formatBold.setSelected(false);
+		formatItalic.setSelected(false);
+		formatUnderline.setSelected(false);
+		formatLink.setSelected(false);
+		formatImage.setSelected(false);
+		formatAttach.setSelected(false);
+		formatHeading.setSelected(false);
+		formatBullet.setSelected(false);
+		formatNumber.setSelected(false);
 	}
 
 	@Override public void onClick(View v)
@@ -110,31 +116,7 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 		if (v == formatBold)
 		{
-			if (effects.keySet().contains(RichEditText.BOLD))
-			{
-				effects.remove(RichEditText.BOLD);
-			}
-			else
-			{
-				effects.put(RichEditText.BOLD, new Integer[]{editor.getSelectionStart(), editor.length()});
-			}
-		}
-	}
-
-	private void applyStyles(int count)
-	{
-		if (count <= 0) return;
-
-		for (Effect effect : effects.keySet())
-		{
-			int start = effects.get(effect)[0];
-			int originalLength = effects.get(effect)[1];
-			int diff = editor.length() - originalLength;
-
-			editor.setSelection(start, start + diff);
-			editor.applyEffect(effect, true);
-
-			editor.setSelection(start + diff);
+			editor.toggleEffect(RichEditText.BOLD);
 		}
 	}
 }
