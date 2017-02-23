@@ -91,6 +91,22 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 						{
 							formatBold.setSelected(true);
 						}
+						else if (effect == RichEditText.ITALIC)
+						{
+							formatItalic.setSelected(true);
+						}
+						else if (effect == RichEditText.UNDERLINE)
+						{
+							formatUnderline.setSelected(true);
+						}
+						else if (effect == RichEditText.URL)
+						{
+							formatLink.setSelected(true);
+						}
+						else if (effect == RichEditText.BULLET)
+						{
+							formatBullet.setSelected(true);
+						}
 					}
 				}
 			}
@@ -117,6 +133,22 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 		if (v == formatBold)
 		{
 			editor.toggleEffect(RichEditText.BOLD);
+		}
+		else if (v == formatItalic)
+		{
+			editor.toggleEffect(RichEditText.ITALIC);
+		}
+		else if (v == formatUnderline)
+		{
+			editor.toggleEffect(RichEditText.UNDERLINE);
+		}
+		else if (v == formatLink)
+		{
+
+		}
+		else if (v == formatBullet)
+		{
+			editor.toggleEffect(RichEditText.BULLET);
 		}
 	}
 }
