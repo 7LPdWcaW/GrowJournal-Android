@@ -158,17 +158,28 @@
 		android:layout_above="@id/button_container"
 		android:orientation="vertical"
 	>
-		<LinearLayout
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
-			android:orientation="horizontal"
 			android:paddingLeft="16dp"
 		>
-			<ImageView
+			<ImageButton
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:id="@+id/finish"
 				android:src="@drawable/ic_arrow_back_black_24dp"
 				android:layout_gravity="center_vertical"
+				android:background="?android:selectableItemBackground"
+			/>
+
+			<ImageButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/done"
+				android:src="@drawable/ic_done_black_24dp"
+				android:layout_gravity="center_vertical"
+				android:layout_alignParentRight="true"
+				android:background="?android:selectableItemBackground"
 			/>
 
 			<EditText
@@ -187,10 +198,10 @@
 				android:textSize="20dp"
 				android:fontFamily="sans-serif-medium"
 				android:inputType="textCapWords"
-			>
-				<requestFocus />
-			</EditText>
-		</LinearLayout>
+				android:layout_toLeftOf="@id/done"
+				android:layout_toRightOf="@id/finish"
+			/>
+		</RelativeLayout>
 
 		<com.commonsware.cwac.richedit.RichEditText
 			android:layout_width="match_parent"
@@ -204,6 +215,8 @@
 			android:textColorHint="#666666"
 			android:fontFamily="sans-serif-light"
 			android:hint="Begin your new post..."
-		/>
+		>
+			<requestFocus />
+		</com.commonsware.cwac.richedit.RichEditText>
 	</LinearLayout>
 </RelativeLayout>
