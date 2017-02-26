@@ -13,19 +13,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.commonsware.cwac.richedit.Effect;
 import com.commonsware.cwac.richedit.RichEditText;
+import com.commonsware.cwac.richtextutils.SpannedXhtmlGenerator;
 
 import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
 import me.anon.growjournal.R;
+import me.anon.growjournal.manager.PostsManager;
 import me.anon.growjournal.model.Post;
 
-import static me.anon.growjournal.R.id.heading;
+import static me.anon.growjournal.R.id.done;
+import static me.anon.growjournal.R.id.italic;
+import static me.anon.growjournal.R.id.link;
 
 /**
  * // TODO: Add class description
@@ -56,28 +61,38 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 	private Button heading3;
 	private Button heading4;
 
+	private ImageButton back;
+	private ImageButton save;
+
 	private View headingSizes;
+	private EditText title;
 	private RichEditText editor;
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.post_editor_view, container, false);
+		title = (EditText)view.findViewById(R.id.title);
 		editor = (RichEditText)view.findViewById(R.id.editor);
 		headingSizes = view.findViewById(R.id.heading_sizes);
+		back = (ImageButton)view.findViewById(R.id.finish);
+		save = (ImageButton)view.findViewById(done);
 
 		formatBold = (ImageButton)view.findViewById(R.id.bold);
-		formatItalic = (ImageButton)view.findViewById(R.id.italic);
+		formatItalic = (ImageButton)view.findViewById(italic);
 		formatUnderline = (ImageButton)view.findViewById(R.id.underline);
-		formatLink = (ImageButton)view.findViewById(R.id.link);
+		formatLink = (ImageButton)view.findViewById(link);
 		formatImage = (ImageButton)view.findViewById(R.id.image);
 		formatAttach = (ImageButton)view.findViewById(R.id.attach);
-		formatHeading = (ImageButton)view.findViewById(heading);
+		formatHeading = (ImageButton)view.findViewById(R.id.heading);
 		heading1 = (Button)view.findViewById(R.id.heading_1);
 		heading2 = (Button)view.findViewById(R.id.heading_2);
 		heading3 = (Button)view.findViewById(R.id.heading_3);
 		heading4 = (Button)view.findViewById(R.id.heading_4);
 		formatBullet = (ImageButton)view.findViewById(R.id.bullet_list);
 //		formatNumber = (ImageButton)view.findViewById(R.id.number_list);
+
+		back.setOnClickListener(this);
+		save.setOnClickListener(this);
 
 		formatBold.setOnClickListener(this);
 		formatItalic.setOnClickListener(this);
@@ -253,6 +268,11 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 			editor.applyEffect(RichEditText.ABSOLUTE_SIZE, 28);
 		}
+		else if (v == save)
+		{
+			savePost();
+			getActivity().finish();
+		}
 
 //		else if (v == formatNumber)
 //		{
@@ -264,5 +284,27 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 //
 //			editor.toggleEffect(RichEditText.NUMBER_LIST);
 //		}
+	}
+
+	private void savePost()
+	{
+		boolean newPost = post == null;
+		if (newPost)
+		{
+			post = new Post();
+		}
+
+		post.setTitle(title.getText().toString());
+		String body = new SpannedXhtmlGenerator().toXhtml(editor.getText());
+
+		post.setBody(body);
+		post.setPublishStatus(Post.PublishStatus.DRAFT);
+
+		if (newPost)
+		{
+			PostsManager.getInstance().addPost(post);
+		}
+
+		PostsManager.getInstance().save();
 	}
 }
