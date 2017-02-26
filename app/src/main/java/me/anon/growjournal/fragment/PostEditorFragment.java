@@ -1,13 +1,8 @@
 package me.anon.growjournal.fragment;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.DynamicDrawableSpan;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,45 +121,51 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 	@Override public void onClick(View v)
 	{
-		v.setSelected(!v.isSelected());
+		boolean multiSelected = editor.getSelectionEnd() > editor.getSelectionStart();
 
 		if (v == formatImage)
 		{
-			SpannableString imageString = new SpannableString("abc");
-			Drawable test = getResources().getDrawable(R.mipmap.ic_launcher);
-			test.setBounds(0, 0, test.getIntrinsicWidth(), test.getIntrinsicHeight());
-			ImageSpan image = new ImageSpan(test, DynamicDrawableSpan.ALIGN_BASELINE);
-			imageString.setSpan(image, 0, 3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
-			editor.getText().insert(editor.getSelectionStart(), imageString);
 		}
 		else if (v == formatBold)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "**");
+			editor.getText().insert(Math.min(editor.getSelectionEnd() + 2, editor.getText().length()), "**");
+			editor.setSelection(editor.getSelectionStart() - 2);
 		}
 		else if (v == formatItalic)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "*");
+			editor.getText().insert(Math.min(editor.getSelectionEnd() + 1, editor.getText().length()), "*");
+			editor.setSelection(editor.getSelectionStart() - 1);
 		}
 		else if (v == formatUnderline)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "_");
+			editor.getText().insert(Math.min(editor.getSelectionEnd() + 1, editor.getText().length()), "_");
+			editor.setSelection(editor.getSelectionStart() - 1);
 		}
 		else if (v == formatLink)
 		{
-			EditLinkDialogFragment dialogFragment = new EditLinkDialogFragment(null);
+			String text = "";
+			if (multiSelected)
+			{
+				text = editor.getText().subSequence(editor.getSelectionStart(), editor.getSelectionEnd()).toString();
+			}
+
+			EditLinkDialogFragment dialogFragment = new EditLinkDialogFragment(text);
 			dialogFragment.setOnEditLinkListener(new EditLinkDialogFragment.OnEditLinkListener()
 			{
 				@Override public void onLinkEdited(String text, String url)
 				{
-
+					editor.getText().insert(editor.getSelectionStart(), "[" + text + "](" + url + ")");
 				}
 			});
 			dialogFragment.show(getChildFragmentManager(), null);
 		}
 		else if (v == formatBullet)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "\n - ");
 		}
 		else if (v == formatHeading)
 		{
@@ -173,19 +174,19 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 		}
 		else if (v == heading1)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "\n#");
 		}
 		else if (v == heading2)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "\n##");
 		}
 		else if (v == heading3)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "\n###");
 		}
 		else if (v == heading4)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "\n####");
 		}
 		else if (v == save)
 		{
@@ -194,7 +195,7 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 		}
 		else if (v == formatNumber)
 		{
-
+			editor.getText().insert(editor.getSelectionStart(), "\n 1. ");
 		}
 	}
 

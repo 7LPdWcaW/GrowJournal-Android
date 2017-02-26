@@ -23,13 +23,13 @@ public class EditLinkDialogFragment extends DialogFragment
 
 	private EditText titleEdit;
 	private EditText urlEdit;
-	private String url = "";
+	private String title = "";
 
 	@Setter private OnEditLinkListener onEditLinkListener;
 
-	public EditLinkDialogFragment(String url)
+	public EditLinkDialogFragment(String title)
 	{
-		this.url = url;
+		this.title = title;
 	}
 
 	public EditLinkDialogFragment()
@@ -42,10 +42,9 @@ public class EditLinkDialogFragment extends DialogFragment
 		titleEdit = (EditText)view.findViewById(R.id.text);
 		urlEdit = (EditText)view.findViewById(R.id.url);
 
-		if (url != null)
+		if (title != null)
 		{
-			titleEdit.setVisibility(View.GONE);
-			urlEdit.setText(url);
+			titleEdit.setText(title);
 		}
 
 		final AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
