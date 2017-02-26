@@ -161,14 +161,14 @@
 					style="@style/EditorButton"
 				/>
 
-				<!--<ImageButton-->
-					<!--android:layout_width="48dp"-->
-					<!--android:layout_height="48dp"-->
-					<!--android:id="@+id/number_list"-->
-					<!--android:src="@drawable/ic_format_list_numbered_black_24dp"-->
-					<!--android:contentDescription="Numbered list"-->
-					<!--style="@style/EditorButton"-->
-				<!--/>-->
+				<ImageButton
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/number_list"
+					android:src="@drawable/ic_format_list_numbered_black_24dp"
+					android:contentDescription="Numbered list"
+					style="@style/EditorButton"
+				/>
 			</LinearLayout>
 		</LinearLayout>
 	</HorizontalScrollView>
@@ -227,7 +227,7 @@
 			/>
 		</RelativeLayout>
 
-		<com.commonsware.cwac.richedit.RichEditText
+		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:id="@+id/editor"
@@ -241,6 +241,6 @@
 			android:hint="Begin your new post..."
 		>
 			<requestFocus />
-		</com.commonsware.cwac.richedit.RichEditText>
+		</EditText>
 	</LinearLayout>
 </RelativeLayout>
