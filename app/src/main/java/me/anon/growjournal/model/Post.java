@@ -14,7 +14,7 @@ public class Post
 	@Getter @Setter private String title;
 	@Getter @Setter private String body;
 	@Getter @Setter private long publishDate;
-	private PublishStatus publishStatus;
+	@Getter @Setter private PublishStatus publishStatus;
 
 	public static enum PublishStatus
 	{
