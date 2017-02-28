@@ -8,4 +8,16 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
+	<style name="AppTheme.DarkStatus">
+		<item name="colorPrimaryDark">#999999</item>
+	</style>
+
+	<style name="EditorButton">
+		<item name="android:tint">#424242</item>
+		<item name="android:padding">12dp</item>
+		<item name="android:scaleType">fitCenter</item>
+		<item name="android:foreground">?selectableItemBackground</item>
+		<item name="android:background">@drawable/select_deselect_button_drawable</item>
+		<item name="android:contentDescription">Bold</item>
+	</style>
 </resources>

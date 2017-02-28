@@ -31,7 +31,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostViewHolder>
 
 	@Override public void onBindViewHolder(PostViewHolder holder, int position)
 	{
-		holder.populate(items.get(getItemCount() - position));
+		holder.populate(items.get(getItemCount() - 1 - position));
 	}
 
 	@Override public int getItemCount()
