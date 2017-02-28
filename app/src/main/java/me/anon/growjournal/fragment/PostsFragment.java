@@ -46,7 +46,6 @@ public class PostsFragment extends Fragment
 		if (savedInstanceState == null)
 		{
 			adapter = new PostsAdapter();
-			adapter.setItems(PostsManager.getInstance().getPosts());
 
 			recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 			recyclerView.setAdapter(adapter);
@@ -60,5 +59,16 @@ public class PostsFragment extends Fragment
 				startActivity(newPost);
 			}
 		});
+	}
+
+	@Override public void onResume()
+	{
+		super.onResume();
+
+		if (adapter != null)
+		{
+			adapter.setItems(PostsManager.getInstance().getPosts());
+			adapter.notifyDataSetChanged();
+		}
 	}
 }
