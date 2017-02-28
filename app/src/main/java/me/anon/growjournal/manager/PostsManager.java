@@ -1,5 +1,6 @@
 package me.anon.growjournal.manager;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import lombok.Getter;
@@ -29,6 +30,20 @@ public class PostsManager
 	public void deletePost(Post post)
 	{
 		posts.remove(post);
+	}
+
+	public void load()
+	{
+		File folder = new File(folderPath);
+		for (String s : folder.list())
+		{
+			Post post = Post.loadFrom(s);
+
+			if (post != null)
+			{
+				posts.add(post);
+			}
+		}
 	}
 
 	public void save()

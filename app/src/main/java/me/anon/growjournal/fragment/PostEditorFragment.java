@@ -3,6 +3,7 @@ package me.anon.growjournal.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -201,10 +202,17 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 	private void savePost()
 	{
+		if (TextUtils.isEmpty(title.getText()))
+		{
+			title.setError("Title required");
+			return;
+		}
+
 		boolean newPost = post == null;
 		if (newPost)
 		{
 			post = new Post();
+			PostsManager.getInstance().addPost(post);
 		}
 
 		post.setTitle(title.getText().toString());
@@ -212,11 +220,6 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 
 		post.setBody(body);
 		post.setPublishStatus(Post.PublishStatus.DRAFT);
-
-		if (newPost)
-		{
-			PostsManager.getInstance().addPost(post);
-		}
 
 		PostsManager.getInstance().save();
 	}

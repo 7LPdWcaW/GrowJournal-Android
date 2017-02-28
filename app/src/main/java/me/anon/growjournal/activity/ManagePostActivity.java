@@ -17,7 +17,7 @@ import me.anon.growjournal.model.Post;
 public class ManagePostActivity extends AppCompatActivity
 {
 	private ViewPager viewPager;
-	private Post post = new Post();
+	private Post post = null;
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState)
 	{

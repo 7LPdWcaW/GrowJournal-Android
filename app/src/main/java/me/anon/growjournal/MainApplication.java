@@ -21,5 +21,7 @@ public class MainApplication extends Application
 		{
 			new File(PostsManager.folderPath).mkdirs();
 		}
+
+		PostsManager.getInstance().load();
 	}
 }
