@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.commonsware.cwac.richtextutils.SpannedXhtmlGenerator;
-
 import lombok.Getter;
 import lombok.Setter;
 import me.anon.growjournal.R;
@@ -216,7 +214,7 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 		}
 
 		post.setTitle(title.getText().toString());
-		String body = new SpannedXhtmlGenerator().toXhtml(editor.getText());
+		String body = editor.getText().toString();
 
 		post.setBody(body);
 		post.setPublishStatus(Post.PublishStatus.DRAFT);
