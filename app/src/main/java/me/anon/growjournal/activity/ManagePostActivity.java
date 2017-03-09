@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.fragment.PostEditorFragment;
+import me.anon.growjournal.helper.BundleHelper;
 import me.anon.growjournal.model.Post;
 
 /**
@@ -24,6 +25,8 @@ public class ManagePostActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.manage_post_view);
+
+		post = BundleHelper.getInstance().retrieve(getClass(), Post.class);
 
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 		viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager())

@@ -1,5 +1,6 @@
 package me.anon.growjournal.view.holder;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +11,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import me.anon.growjournal.R;
+import me.anon.growjournal.activity.ManagePostActivity;
+import me.anon.growjournal.helper.BundleHelper;
 import me.anon.growjournal.model.Post;
 
 /**
@@ -32,7 +35,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder
 		publishStatus = itemView.findViewById(R.id.publish_status);
 	}
 
-	public void populate(Post model)
+	public void populate(final Post model)
 	{
 		title.setText(model.getTitle());
 		summary.setText(model.getBody());
@@ -44,5 +47,15 @@ public class PostViewHolder extends RecyclerView.ViewHolder
 		Calendar actionCalendar = GregorianCalendar.getInstance();
 		actionCalendar.setTime(updateDate);
 		date.setText(dateFormat.format(updateDate) + " " + timeFormat.format(updateDate));
+
+		itemView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override public void onClick(View v)
+			{
+				Intent edit = new Intent(v.getContext(), ManagePostActivity.class);
+				BundleHelper.getInstance().store(ManagePostActivity.class, model);
+				v.getContext().startActivity(edit);
+			}
+		});
 	}
 }
