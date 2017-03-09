@@ -1,10 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
+	android:layout_height="wrap_content"
+	android:padding="8dp"
 >
+	<View
+		android:layout_width="3dp"
+		android:layout_height="match_parent"
+		android:id="@+id/publish_status"
+		android:background="#fbc02d"
+		android:layout_alignParentLeft="true"
+	/>
 
-</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:padding="4dp"
+		android:layout_marginLeft="8dp"
+		android:layout_toRightOf="@id/publish_status"
+	>
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/title"
+			android:textSize="20sp"
+			android:textColor="#ff000000"
+			android:fontFamily="sans-serif-medium"
+			android:textStyle="normal"
+			tools:text="Plant update 1"
+		/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/date"
+			android:textSize="12sp"
+			android:textStyle="italic"
+			android:layout_marginTop="8dp"
+			tools:text="Created 01/01/70, updated 02/01/70 10:00"
+		/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/summary"
+			android:textSize="14sp"
+			android:layout_marginTop="16dp"
+			android:maxLength="200"
+			android:ellipsize="end"
+			tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt lectus sagittis, condimentum erat ornare, accumsan leo. Sed vulputate euismod nisl. Ut gravida, nunc id porta viverra, urna massa blandit urna, a facilisis dolor elit in purus. Nulla pharetra, ante vel molestie vulputate, risus massa tempor urna, ut mollis magna metus vel ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nulla urna, egestas a vulputate egestas, mollis ut mi. Curabitur efficitur lacus in purus condimentum, id pulvinar augue fringilla. Sed accumsan viverra ex sit amet commodo. Nam non erat mattis, cursus quam quis, pulvinar elit."
+		/>
+	</LinearLayout>
+</RelativeLayout>
