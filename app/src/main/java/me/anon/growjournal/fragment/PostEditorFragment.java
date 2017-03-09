@@ -103,6 +103,22 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 	@Override public void onActivityCreated(@Nullable Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
+
+		if (savedInstanceState == null)
+		{
+			populateUi();
+		}
+	}
+
+	private void populateUi()
+	{
+		if (post != null)
+		{
+			title.setText(post.getTitle());
+			editor.setText(post.getBody());
+			editor.requestFocus();
+			editor.requestFocusFromTouch();
+		}
 	}
 
 	private void toggleButtonsOff()
