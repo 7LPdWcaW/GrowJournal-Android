@@ -1,7 +1,9 @@
 package me.anon.growjournal.view.holder;
 
 import android.content.Intent;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import java.util.GregorianCalendar;
 import me.anon.growjournal.R;
 import me.anon.growjournal.activity.ManagePostActivity;
 import me.anon.growjournal.helper.BundleHelper;
+import me.anon.growjournal.manager.PostsManager;
 import me.anon.growjournal.model.Post;
 
 /**
@@ -55,6 +58,38 @@ public class PostViewHolder extends RecyclerView.ViewHolder
 				Intent edit = new Intent(v.getContext(), ManagePostActivity.class);
 				BundleHelper.getInstance().store(ManagePostActivity.class, model);
 				v.getContext().startActivity(edit);
+			}
+		});
+
+		itemView.setOnLongClickListener(new View.OnLongClickListener()
+		{
+			@Override public boolean onLongClick(final View v)
+			{
+				PopupMenu popup = new PopupMenu(v.getContext(), v);
+
+				popup.getMenuInflater().inflate(R.menu.post_menu, popup.getMenu());
+				popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+				{
+					public boolean onMenuItemClick(MenuItem item)
+					{
+						switch (item.getItemId())
+						{
+							case R.id.edit:
+								v.callOnClick();
+								return true;
+
+							case R.id.delete:
+								PostsManager.getInstance().deletePost(model);
+								return true;
+						}
+
+						return false;
+					}
+				});
+
+				popup.show();
+
+				return true;
 			}
 		});
 	}
