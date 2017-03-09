@@ -1,0 +1,6 @@
+<resources>
+	<style name="AppTheme.DarkStatus">
+		<item name="colorPrimaryDark">#F9F9F9</item>
+		<item name="android:windowLightStatusBar">true</item>
+	</style>
+</resources>

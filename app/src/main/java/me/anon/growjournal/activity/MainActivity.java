@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import me.anon.growjournal.R;
+import me.anon.growjournal.fragment.PostsFragment;
 import me.anon.growjournal.view.PagerSlidingTabStrip;
 
 /**
@@ -20,12 +22,20 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.main_view);
+		setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+		setTitle("Grow Journal");
 
 		ViewPager pager = (ViewPager)findViewById(R.id.view_pager);
 		pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager())
 		{
 			@Override public Fragment getItem(int position)
 			{
+				switch (position)
+				{
+					case 0:
+						return PostsFragment.newInstance();
+				}
+
 				return new Fragment();
 			}
 
