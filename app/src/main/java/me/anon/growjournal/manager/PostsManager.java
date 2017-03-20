@@ -37,7 +37,7 @@ public class PostsManager
 		File folder = new File(folderPath);
 		for (String s : folder.list())
 		{
-			Post post = Post.loadFrom(s);
+			Post post = Post.loadFrom(folder.getAbsolutePath() + "/" + s);
 
 			if (post != null)
 			{
