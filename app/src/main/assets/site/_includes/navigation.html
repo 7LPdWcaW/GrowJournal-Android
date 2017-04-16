@@ -1,0 +1,8 @@
+<a href="{{ site.url }}{{ site.baseurl }}/">Posts</a>
+<a href="{{ site.url }}{{ site.baseurl }}/plants/">Plants</a>
+
+{% for page in site.pages %}
+    {% if page.tags contains "about" %}
+        <a href="{{ site.url }}{{ site.baseurl }}/{{ page.url }}">{{ page.title }}</a>
+    {% endif %}
+{% endfor %} 
