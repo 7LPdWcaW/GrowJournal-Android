@@ -410,4 +410,27 @@ public class FileManager
 
 		return null;
 	}
+
+	/**
+	 * Recursively deletes a file or folder
+	 *
+	 * @param fileOrDirectory
+	 */
+	public void deleteRecursive(File fileOrDirectory)
+	{
+		if (fileOrDirectory.isDirectory())
+		{
+			File[] files = fileOrDirectory.listFiles();
+
+			if (files != null)
+			{
+				for (File child : files)
+				{
+					deleteRecursive(child);
+				}
+			}
+		}
+
+		fileOrDirectory.delete();
+	}
 }

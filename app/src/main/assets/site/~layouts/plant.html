@@ -1,0 +1,330 @@
+---
+layout: default
+archive: false
+---
+
+<style type="text/css">
+	ul {
+		padding: 0px;
+	}
+
+	.actions {
+		margin-bottom: 10px;
+		float: left;
+	}
+
+	.actions li {
+		float: left;
+		display: block;
+		width: 100%;
+		padding-top:10px;
+	}
+
+	.actions li .header {
+		background-color: #f3f3f3;
+		padding: 10px;
+		margin: 0px;
+	}
+
+	.notes {
+		clear: both;
+		font-size: 0.7em;
+		padding: 4px;
+		margin-bottom: 0px;
+	}
+
+	table {
+		color: #333;
+		font-family: Helvetica, Arial, sans-serif;
+		border-collapse:
+		collapse; border-spacing: 0;
+		font-size: 0.7em;
+	}
+
+	td, th {
+		border: 1px solid transparent; /* No more visible border */
+		transition: all 0.3s; /* Simple transition for hover effect */
+	}
+
+	th {
+		background: #DFDFDF; /* Darken header a bit */
+		font-weight: bold;
+	}
+
+	td {
+		background: #FAFAFA;
+	}
+
+/* Cells in even rows (2,4,6...) are one color */
+tr:nth-child(even) td { background: #F1F1F1; }
+
+/* Cells in odd rows (1,3,5...) are another (excludes header cells) */
+tr:nth-child(odd) td { background: #FEFEFE; }
+
+tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
+
+.image {
+	padding: 8px;
+	margin: 2px;
+	height: 180px;
+	line-height: 180px;
+	background-clip: content-box;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 25px;
+	float: left;
+}
+</style>
+
+<link rel="stylesheet" type="text/css" href="../../css/lightbox.css" />
+<script type="text/javascript" src="../../js/Chart.min.js"></script>
+<script type="text/javascript" src="../../js/lightbox-plus-jquery.js"></script>
+<script type="text/javascript">
+function ready()
+{
+	var actionData = JSON.parse('{{page.data.actions | jsonify}}');
+	var inputVals = [];
+	var inputLabels = [];
+	var runoffVals = [];
+	var ppmVals = [];
+
+	var action;
+	for (action in actionData)
+	{
+		if (actionData[action].type == "Water")
+		{
+			inputLabels.push(new Date(actionData[action].date))
+
+			inputVals.push(actionData[action].ph);
+			runoffVals.push(actionData[action].runoff);
+			ppmVals.push(actionData[action].ppm);
+		}
+	}
+
+	var phData = {
+		labels: inputLabels,
+		datasets: [
+			{
+				label: "Input pH",
+				fill: false,
+				lineTension: 0.1,
+				backgroundColor: "rgba(75,192,192,0.4)",
+				borderColor: "rgba(75,192,192,1)",
+				borderCapStyle: 'butt',
+				borderDash: [],
+				borderDashOffset: 0.0,
+				borderJoinStyle: 'miter',
+				pointBorderColor: "rgba(75,192,192,1)",
+				pointBackgroundColor: "#fff",
+				pointBorderWidth: 1,
+				pointHoverRadius: 5,
+				pointHoverBackgroundColor: "rgba(75,192,192,1)",
+				pointHoverBorderColor: "rgba(220,220,220,1)",
+				pointHoverBorderWidth: 2,
+				pointRadius: 1,
+				pointHitRadius: 10,
+				data: inputVals,
+				spanGaps: false,
+			},
+			{
+				label: "Runoff pH",
+				fill: false,
+				lineTension: 0.1,
+				backgroundColor: "rgba(255,192,192,0.4)",
+				borderColor: "rgba(255,192,192,1)",
+				borderCapStyle: 'butt',
+				borderDash: [],
+				borderDashOffset: 0.0,
+				borderJoinStyle: 'miter',
+				pointBorderColor: "rgba(255,192,192,1)",
+				pointBackgroundColor: "#fff",
+				pointBorderWidth: 1,
+				pointHoverRadius: 5,
+				pointHoverBackgroundColor: "rgba(255,192,192,1)",
+				pointHoverBorderColor: "rgba(220,220,220,1)",
+				pointHoverBorderWidth: 2,
+				pointRadius: 1,
+				pointHitRadius: 10,
+				data: runoffVals,
+				spanGaps: false,
+			}
+		]
+	};
+
+	var ppmData = {
+		labels: inputLabels,
+		datasets: [
+			{
+				label: "ppm",
+				fill: false,
+				lineTension: 0.1,
+				backgroundColor: "rgba(142,124,195,0.4)",
+				borderColor: "rgba(142,124,195,1)",
+				borderCapStyle: 'butt',
+				borderDash: [],
+				borderDashOffset: 0.0,
+				borderJoinStyle: 'miter',
+				pointBorderColor: "rgba(142,124,195,1)",
+				pointBackgroundColor: "#fff",
+				pointBorderWidth: 1,
+				pointHoverRadius: 5,
+				pointHoverBackgroundColor: "rgba(142,124,195,1)",
+				pointHoverBorderColor: "rgba(220,220,220,1)",
+				pointHoverBorderWidth: 2,
+				pointRadius: 1,
+				pointHitRadius: 10,
+				data: ppmVals,
+				spanGaps: false,
+			}
+		]
+	};
+
+	var phChart = document.getElementById('ph').getContext("2d");
+	new Chart(phChart, {
+		type: 'line',
+		data: phData,
+		options: {
+			scales: {
+				xAxes: [{
+					display: false
+				}]
+			}
+		}
+	});
+
+	var ppmChart = document.getElementById('ppm').getContext("2d");
+	new Chart(ppmChart, {
+		type: 'line',
+		data: ppmData,
+		options: {
+			scales: {
+				xAxes: [{
+					display: false
+				}]
+			}
+		}
+	});
+}
+
+document.addEventListener('DOMContentLoaded', ready, false);
+
+function toggleDiv(source, id) {
+	var div = document.getElementById(id);
+	source.innerHTML = div.style.display == "none" ? "Hide" : "Show";
+	div.style.display = div.style.display == "none" ? "block" : "none";
+
+}
+</script>
+
+<h1>{{page.data.name}}</h1>
+<h2>{{page.data.strain}}</h2>
+
+<ul class="notes" style="">
+	{% if page.data.medium %}
+	<li><strong>medium:</strong> {{page.data.medium}}</li>
+	{% endif %}
+	{% if page.data.mediumDetails %}
+	<li><strong>medium details:</strong> {{page.data.mediumDetails}}</li>
+	{% endif %}
+	
+	<li><strong>planted:</strong> {{page.data.plantDate | divided_by: 1000 | date: "%Y/%M/%d %H:%m"}}</li>
+	
+	{% if page.data.dates %}
+		{% if page.data.dates.germination %}
+		<li><strong>germination:</strong> {{page.data.dates.germination}} days</li>
+		{% endif %}
+
+		{% if page.data.dates.vegetation %}
+		<li><strong>vegetation:</strong> {{page.data.dates.vegetation}} days</li>
+		{% endif %}
+
+		{% if page.data.dates.flower %}
+		<li><strong>flower:</strong> {{page.data.dates.flower}} days</li>
+		{% endif %}
+	{% endif %}
+</ul>
+
+<h3>Photos</h3>
+{% for photo in page.data.images reversed %}
+<a href="../../assets/{{ page.data.id }}/{{ photo | split:'/' | last}}" data-lightbox="images">
+	<div class="image" style="background-image: url('../../assets/{{ page.data.id }}/thumb/{{ photo | split:'/' | last}}'); width: 100px; height: 100px;">
+		&nbsp;
+	</div>
+</a>
+{% endfor %}
+
+<br style="clear: both;" />
+
+<h3>Statistics</h3>
+<canvas id="ph" width="400" height="100"></canvas>
+
+<br style="clear: both;" />
+<canvas id="ppm" width="400" height="100"></canvas>
+
+<h3>Latest updates</h3>
+<ul class="actions">
+	{% for action in page.data.actions reversed %}
+	<li>
+		<p class="header">{{action.type}} - {{action.date | divided_by: 1000 | date: "%Y/%M/%d %H:%m"}} <a style="float: right;" onClick="javascript:toggleDiv(this, 'action-{{forloop.index}}')">Show</a></p>
+
+		<div style="padding: 10px; background-color: #FAFAFA; display: none;" id="action-{{forloop.index}}">
+			{% if action.type == 'StageChange' %}
+				<p class="notes">Changed to stage {{action.newStage | capitalize}}
+			{% endif %}
+
+			{% if action.type == 'Action' %}
+				<p class="notes">
+				{% if action.action == "TOP" %}Topped{% endif %}
+				{% if action.action == "FIMM" %}Fuck I Missed{% endif %}
+				{% if action.action == "LOLIPOP" %}Lolipopped{% endif %}
+				</p>
+			{% endif %}
+
+			{% if action.notes %}
+				<p class="notes">{{action.notes}}</p>
+			{% endif %}
+
+			{% if action.type == 'Water' %}
+				<ul class="notes" style="float: left; width: 25%; display: block;">
+					{% if action.ph %}
+					<li><strong>pH:</strong> {{action.ph}}</li>
+					{% endif %}
+					{% if action.ppm %}
+					<li><strong>ppm:</strong> {{action.ppm}}</li>
+					{% endif %}
+					{% if action.amount %}
+					<li><strong>amount:</strong> {{action.amount}} ml</li>
+					{% endif %}
+				</ul>
+
+				<ul class="notes" style="float: left; clear: none;">
+					{% if action.runoff %}
+					<li><strong>runoff:</strong> {{action.runoff}}</li>
+					{% endif %}
+					{% if action.temp %}
+					<li><strong>temp:</strong> {{action.temp}}</li>
+					{% endif %}
+				</ul>
+
+				<br style="clear: both; " />
+
+				{% if action.additives.size > 0 %}
+				<h4>Additives</h4>
+				<table>
+					<tr>
+						<th>Additive</th>
+						<th>Ammount (ml/l)</th>
+					</tr>
+					{% for additive in action.additives %}
+					<tr>
+						<td>{{additive.description}}</td>
+						<td>{{additive.amount}}</td>
+					</tr>
+					{% endfor %}
+				</table>
+				{% endif %}
+			{% endif %}
+		</div>
+	</li>
+	{% endfor %}
+</ul>
