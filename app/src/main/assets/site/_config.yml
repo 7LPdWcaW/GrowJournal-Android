@@ -1,0 +1,48 @@
+# Site settings
+title:       7LpdWCaw
+email:       
+author:      
+description: "Grow log"
+baseurl:     "/TestJekyll"
+url:         "https://7lpdwcaw.github.io"
+date_format: "%b %-d, %Y"
+
+# Optional features
+animated: true
+
+# Disqus post comments
+# (leave blank to disable Disqus)
+disqus_shortname:
+
+text:
+  pagination:
+    newer: 'Newer'
+    older: 'Older'
+  post:
+    updated:        'Updated'
+    minute_read:    'minute read'
+    related_posts:  'Related Posts'
+  og_locale: 'en_US'
+
+# Build settings
+markdown:     kramdown
+redcarpet:
+  extensions: ['smart', 'tables', 'with_toc_data']
+permalink:    pretty
+paginate:     4
+sass:
+  style: compressed
+gems:
+  - jekyll-paginate
+  - jekyll-sitemap
+
+# https://github.com/jekyll/jekyll/issues/2938
+exclude: [vendor]
+include: ['_pages']
+
+# This is for plugin to generate pages automatically for data/plants.json
+# page_gen:
+#   - data: 'plants'
+#     template: 'plant'
+#     name: 'name'
+#     dir: 'plants'

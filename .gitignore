@@ -1,3 +1,6 @@
+_site
+.sass-cache
+.jekyll-metadata
 .gradle
 /local.properties
 /.idea/workspace.xml
