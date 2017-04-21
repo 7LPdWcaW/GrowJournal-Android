@@ -59,7 +59,7 @@ public class GitManager
 			copyAssets("site", context);
 		}
 
- 		if (git == null)
+		if (git == null)
 		{
 			try
 			{
