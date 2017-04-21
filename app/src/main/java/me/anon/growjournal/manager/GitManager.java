@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 import lombok.Getter;
 
@@ -147,6 +148,34 @@ public class GitManager
 		while ((read = src.read(buffer)) != -1)
 		{
 			dest.write(buffer, 0, read);
+		}
+	}
+
+	/**
+	 * Commits all files on the working branch
+	 */
+	public void commitChanges()
+	{
+		try
+		{
+			if (git.status().call().hasUncommittedChanges())
+			{
+				String username = "";
+				String email = "";
+
+				git.add()
+					.addFilepattern(".")
+					.call();
+
+				git.commit()
+					.setAuthor(username, email)
+					.setMessage("Commit " + new Date().toString())
+					.call();
+			}
+		}
+		catch (GitAPIException e)
+		{
+			e.printStackTrace();
 		}
 	}
 
