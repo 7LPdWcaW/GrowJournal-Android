@@ -55,10 +55,10 @@ public class GitManager
 		if (!localRepo.exists())
 		{
 			createNewRepo();
-			copyAssets("site/", context);
+			copyAssets("site", context);
 		}
 
-		if (git == null)
+ 		if (git == null)
 		{
 			try
 			{
@@ -109,12 +109,10 @@ public class GitManager
 
 			for (String filename : files)
 			{
-				if (assetManager.list(filename).length == 0)
+				if (assetManager.list(path + "/" + filename).length == 0)
 				{
-					InputStream in = assetManager.open(filename);
-
-					File outFile = new File(localRepo, filename);
-					OutputStream out = new FileOutputStream(outFile);
+					InputStream in = assetManager.open(path + "/" + filename);
+					OutputStream out = new FileOutputStream(new File(localRepo.getParent(), (path + "/" + filename).replaceAll("~", "_")));
 
 					copyFile(in, out);
 
@@ -124,7 +122,8 @@ public class GitManager
 				}
 				else
 				{
-					copyAssets(path + filename + "/", context);
+					new File(localRepo.getParent(), (path + "/" + filename).replaceAll("~", "_")).mkdirs();
+					copyAssets(path + "/" + filename, context);
 				}
 			}
 		}

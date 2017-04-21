@@ -412,7 +412,7 @@ public class FileManager
 
 	/**
 	 * Recursively deletes a file or folder
-	 * 
+	 *
 	 * @param fileOrDirectory
 	 */
 	public void deleteRecursive(File fileOrDirectory)
