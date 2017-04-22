@@ -2,8 +2,7 @@ package me.anon.growjournal;
 
 import android.app.Application;
 
-import java.io.File;
-
+import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PostsManager;
 
 /**
@@ -15,13 +14,9 @@ public class MainApplication extends Application
 	{
 		super.onCreate();
 
-		PostsManager.folderPath = getFilesDir().getAbsolutePath() + "/posts/";
+		GitManager.getInstance().initialise(this);
 
-		if (!new File(PostsManager.folderPath).exists())
-		{
-			new File(PostsManager.folderPath).mkdirs();
-		}
-
+		PostsManager.folderPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_posts/";
 		PostsManager.getInstance().load();
 	}
 }

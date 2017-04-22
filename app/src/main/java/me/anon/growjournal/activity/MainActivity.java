@@ -2,6 +2,7 @@ package me.anon.growjournal.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.fragment.PostsFragment;
+import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.view.PagerSlidingTabStrip;
 
 /**
@@ -78,6 +81,25 @@ public class MainActivity extends AppCompatActivity
 		{
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
+			return true;
+		}
+		else if (item.getItemId() == R.id.publish)
+		{
+			Toast.makeText(MainActivity.this, "Pushing changes", Toast.LENGTH_SHORT).show();
+			GitManager.getInstance().pushChanges(new Runnable()
+			{
+				@Override public void run()
+				{
+					if (Looper.getMainLooper().getThread() != Thread.currentThread())
+					{
+						runOnUiThread(this);
+						return;
+					}
+
+					Toast.makeText(MainActivity.this, "All changes pushed", Toast.LENGTH_SHORT).show();
+				}
+			});
+
 			return true;
 		}
 

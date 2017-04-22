@@ -54,6 +54,7 @@ public class PostsManager
 			title = title.replaceAll("[^a-zA-Z0-9]+", "-");
 
 			FileManager.getInstance().writeFile(folderPath + title + ".md", post.getBody());
+			GitManager.getInstance().commitChanges();
 		}
 	}
 }
