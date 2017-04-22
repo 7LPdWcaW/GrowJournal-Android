@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+>
+	<PreferenceCategory
+		android:title="Git Settings"
+	>
+		<EditTextPreference
+			android:key="git_url"
+			android:title="Git remote URL"
+			android:summary="Use https where possible"
+		/>
+
+		<EditTextPreference
+			android:key="git_username"
+			android:title="Remote username"
+		/>
+
+		<EditTextPreference
+			android:key="git_password"
+			android:password="true"
+			android:title="Remote password"
+		/>
+
+		<EditTextPreference
+			android:key="committer_name"
+			android:title="Committer name"
+		/>
+
+		<EditTextPreference
+			android:key="committer_email"
+			android:title="Committer email"
+		/>
+	</PreferenceCategory>
+</PreferenceScreen>
