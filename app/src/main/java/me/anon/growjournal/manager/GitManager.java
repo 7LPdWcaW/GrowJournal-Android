@@ -29,12 +29,13 @@ public class GitManager
 
 	@Getter private File localRepo;
 	@Getter private Git git;
+	private Context context;
 
 	public static GitManager getInstance()
 	{
 		if (instance == null)
 		{
-			synchronized (instance)
+			synchronized (GitManager.class)
 			{
 				instance = new GitManager();
 			}
@@ -49,7 +50,7 @@ public class GitManager
 	 */
 	public void initialise(final Context context)
 	{
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		this.context = context.getApplicationContext();
 
 		localRepo = new File(context.getFilesDir() + "/site/");
 
@@ -158,19 +159,33 @@ public class GitManager
 	{
 		try
 		{
-			if (git.status().call().hasUncommittedChanges())
+			if (git.status().call().hasUncommittedChanges() || !git.status().call().isClean())
 			{
-				String username = "";
-				String email = "";
-
 				git.add()
 					.addFilepattern(".")
 					.call();
 
-				git.commit()
-					.setAuthor(username, email)
-					.setMessage("Commit " + new Date().toString())
-					.call();
+				new Thread(new Runnable()
+				{
+					@Override public void run()
+					{
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+						String username = prefs.getString("committer_name", "");
+						String email = prefs.getString("committer_email", "");
+
+						try
+						{
+							git.commit()
+								.setAuthor(username, email)
+								.setMessage("Commit " + new Date().toString())
+								.call();
+						}
+						catch (GitAPIException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}).start();
 			}
 		}
 		catch (GitAPIException e)
@@ -182,7 +197,7 @@ public class GitManager
 	/**
 	 * Pushes the current repo to its remote path
 	 */
-	public void pushChanges()
+	public void pushChanges(final Runnable callback)
 	{
 		new Thread(new Runnable()
 		{
@@ -190,15 +205,22 @@ public class GitManager
 			{
 				try
 				{
-					String remotePath = "";
-					String username = "";
-					String password = "";
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+					String remotePath = prefs.getString("git_url", "");
+					String username = prefs.getString("git_username", "");
+					String password = prefs.getString("git_password", "");
 
 					git.push()
 						.setRemote(remotePath)
 						.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
 						.setPushAll()
+						.setForce(true)
 						.call();
+
+					if (callback != null)
+					{
+						callback.run();
+					}
 				}
 				catch (GitAPIException e)
 				{
