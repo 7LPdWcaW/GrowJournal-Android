@@ -1,6 +1,11 @@
 <resources>
 	<string name="app_name">GrowJournal</string>
 
+	<string name="site_title">My Grow Journal</string>
+	<string name="site_description">My humble grow journal</string>
+	<string name="site_base_url">Base URL is the name of your repository</string>
+	<string name="site_url">URL is the git url eg https://7lpdwcaw.github.io</string>
+
 	<string name="cwac_richedittext_bold">Bold</string>
 	<string name="cwac_richedittext_italic">Italic</string>
 	<string name="cwac_richedittext_underline">Underline</string>
