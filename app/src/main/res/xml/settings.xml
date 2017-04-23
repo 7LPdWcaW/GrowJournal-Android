@@ -33,4 +33,37 @@
 			android:title="Committer email"
 		/>
 	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="Site Settings"
+	>
+		<EditTextPreference
+			android:key="site_title"
+			android:title="Site title"
+			android:summary="My Grow Journal"
+			android:defaultValue="@string/site_title"
+		/>
+
+		<EditTextPreference
+			android:key="site_description"
+			android:title="Site description"
+			android:summary="My humble grow journal"
+			android:inputType="textCapSentences"
+			android:defaultValue="@string/site_description"
+		/>
+
+		<EditTextPreference
+			android:key="site_base_url"
+			android:title="Base URL"
+			android:summary="Base URL is the name of your repository"
+			android:defaultValue="@string/site_base_url"
+		/>
+
+		<EditTextPreference
+			android:key="site_url"
+			android:title="URL"
+			android:summary="URL is the git url eg https://7lpdwcaw.github.io"
+			android:defaultValue="@string/site_url"
+		/>
+	</PreferenceCategory>
 </PreferenceScreen>
