@@ -2,9 +2,11 @@ package me.anon.growjournal.model;
 
 import android.support.annotation.Nullable;
 
+import org.eclipse.jgit.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -65,5 +67,25 @@ public class Post
 		}
 
 		return null;
+	}
+
+	public static void saveTo(Post post, String filePath)
+	{
+		StringBuilder body = new StringBuilder("---\r\n");
+		body.append("title: ").append(post.getTitle());
+		body.append("\r\ndate: ").append(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(post.getPublishDate())));
+		body.append("\r\ncategories: ").append(StringUtils.join(post.getCategories(), " "));
+		body.append("\r\n---\r\n");
+		FileManager.getInstance().writeFile(filePath + "/" + Post.generateTitle(post), post.getBody());
+	}
+
+	public static void delete(Post post, String folderPath)
+	{
+		FileManager.getInstance().deleteRecursive(new File(folderPath, Post.generateTitle(post)));
+	}
+
+	public static String generateTitle(Post post)
+	{
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(post.getPublishDate())) + "-" + post.getTitle().toLowerCase().replaceAll("[^0-9a-z]", "-") + ".md";
 	}
 }

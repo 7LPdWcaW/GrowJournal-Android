@@ -229,6 +229,11 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 			PostsManager.getInstance().addPost(post);
 		}
 
+		if (!post.getTitle().equalsIgnoreCase(title.getText().toString()))
+		{
+			Post.delete(post, PostsManager.folderPath);
+		}
+
 		post.setTitle(title.getText().toString());
 		String body = editor.getText().toString();
 

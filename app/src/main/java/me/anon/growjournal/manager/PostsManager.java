@@ -50,10 +50,7 @@ public class PostsManager
 	{
 		for (Post post : posts)
 		{
-			String title = post.getTitle().toLowerCase();
-			title = title.replaceAll("[^a-zA-Z0-9]+", "-");
-
-			FileManager.getInstance().writeFile(folderPath + title + ".md", post.getBody());
+			Post.saveTo(post, folderPath);
 			GitManager.getInstance().commitChanges();
 		}
 	}
