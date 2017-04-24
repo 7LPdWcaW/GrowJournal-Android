@@ -23,6 +23,7 @@ public class GrowTrackerReceiver extends BroadcastReceiver
 
 			new File(GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_data/").mkdirs();
 			FileManager.getInstance().writeFile(GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_data/plants.json", plantData);
+			PlantManager.getInstance().load();
 			PlantManager.getInstance().regeneratePages();
 			GitManager.getInstance().commitChanges();
 		}
