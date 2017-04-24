@@ -259,6 +259,7 @@ public class FileManager
 		try
 		{
 			File file = new File(fileName);
+			file.setWritable(true);
 
 			if (contents instanceof String)
 			{
