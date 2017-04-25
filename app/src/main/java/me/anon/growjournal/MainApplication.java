@@ -29,6 +29,7 @@ public class MainApplication extends Application
 		PostsManager.folderPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_posts/";
 		PlantManager.filePath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_data/plants.json";
 		PlantManager.pagesPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_pages/";
+		PlantManager.imagesPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/assets/";
 		PlantManager.getInstance().load();
 		PostsManager.getInstance().load();
 

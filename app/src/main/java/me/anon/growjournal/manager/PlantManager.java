@@ -1,5 +1,7 @@
 package me.anon.growjournal.manager;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -9,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -23,6 +26,7 @@ public class PlantManager
 {
 	public static String filePath;
 	public static String pagesPath;
+	public static String imagesPath;
 	@Getter private ArrayList<Plant> plants = new ArrayList<>();
 
 	private static final PlantManager instance = new PlantManager();
@@ -47,6 +51,50 @@ public class PlantManager
 		{
 			plants = new ArrayList<>();
 		}
+	}
+
+	public void writeImage(String imagePath)
+	{
+		String[] folders = imagePath.split("/");
+		String filePath = folders[folders.length - 2] + "/" + folders[folders.length - 1];
+		String thumbPath = folders[folders.length - 2] + "/thumb/" + folders[folders.length - 1];
+
+		new File(imagesPath, folders[folders.length - 2] + "/").mkdirs();
+		new File(imagesPath, folders[folders.length - 2] + "/thumb/").mkdirs();
+
+		try
+		{
+			// resize and compress image
+			Bitmap highRes = BitmapUtils.getBitmap(imagePath, 1200000);
+
+			if (highRes != null)
+			{
+				highRes.compress(Bitmap.CompressFormat.JPEG, 70, new FileOutputStream(imagesPath + filePath));
+				highRes.recycle();
+			}
+
+			Bitmap thumb = BitmapUtils.getBitmap(imagePath, 60000);
+
+			if (thumb != null)
+			{
+				thumb.compress(Bitmap.CompressFormat.JPEG, 70, new FileOutputStream(imagesPath + thumbPath));
+				thumb.recycle();
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteImage(String imagePath)
+	{
+		String[] folders = imagePath.split("/");
+		String filePath = folders[folders.length - 2] + "/" + folders[folders.length - 1];
+		String thumbPath = folders[folders.length - 2] + "/thumb/" + folders[folders.length - 1];
+
+		new File(imagesPath, filePath).delete();
+		new File(imagesPath, thumbPath).delete();
 	}
 
 	public void regeneratePages()
