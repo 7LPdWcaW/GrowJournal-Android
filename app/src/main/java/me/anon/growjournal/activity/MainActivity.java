@@ -1,6 +1,7 @@
 package me.anon.growjournal.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import me.anon.growjournal.R;
 import me.anon.growjournal.fragment.PlantsFragment;
 import me.anon.growjournal.fragment.PostsFragment;
 import me.anon.growjournal.manager.GitManager;
+import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.view.PagerSlidingTabStrip;
 
 /**
@@ -64,12 +66,25 @@ public class MainActivity extends AppCompatActivity
 
 			@Override public int getCount()
 			{
-				return 2;
+				return isGrowTrackerInstalled() || PlantManager.getInstance().getPlants().size() > 0 ? 2 : 1;
 			}
 		});
 
 		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)findViewById(R.id.tabs);
 		tabs.setViewPager(pager);
+	}
+
+	private boolean isGrowTrackerInstalled()
+	{
+		try
+		{
+			getPackageManager().getPackageInfo("me.anon.grow", 0);
+			return true;
+		}
+		catch (PackageManager.NameNotFoundException e)
+		{
+			return false;
+		}
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu)
