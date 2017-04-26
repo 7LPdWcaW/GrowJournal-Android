@@ -116,7 +116,7 @@ public class GitManager
 					InputStream in = assetManager.open(path + "/" + filename);
 					OutputStream out = new FileOutputStream(new File(localRepo.getParent(), (path + "/" + filename).replaceAll("~", "_")));
 
-					copyFile(in, out);
+					FileManager.getInstance().copyFile(in, out);
 
 					in.close();
 					out.flush();
@@ -132,23 +132,6 @@ public class GitManager
 		catch (IOException e)
 		{
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Copies a file from src to dest
-	 * @param src The source input stream
-	 * @param dest The dest output stream
-	 * @throws IOException
-	 */
-	private void copyFile(InputStream src, OutputStream dest) throws IOException
-	{
-		byte[] buffer = new byte[1024];
-		int read;
-
-		while ((read = src.read(buffer)) != -1)
-		{
-			dest.write(buffer, 0, read);
 		}
 	}
 
@@ -188,7 +171,7 @@ public class GitManager
 				}).start();
 			}
 		}
-		catch (GitAPIException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

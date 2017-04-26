@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.anon.growjournal.helper.JekyllUtils;
 import me.anon.growjournal.manager.FileManager;
 
 /**
@@ -76,7 +77,7 @@ public class Post
 		body.append("\r\ndate: ").append(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(post.getPublishDate())));
 		body.append("\r\ncategories: ").append(StringUtils.join(post.getCategories(), " "));
 		body.append("\r\n---\r\n");
-		FileManager.getInstance().writeFile(filePath + "/" + Post.generateTitle(post), post.getBody());
+		FileManager.getInstance().writeFile(filePath + "/" + Post.generateTitle(post), body);
 	}
 
 	public static void delete(Post post, String folderPath)
@@ -86,6 +87,6 @@ public class Post
 
 	public static String generateTitle(Post post)
 	{
-		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(post.getPublishDate())) + "-" + post.getTitle().toLowerCase().replaceAll("[^0-9a-z]", "-") + ".md";
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(post.getPublishDate())) + "-" + JekyllUtils.urlCase(post.getTitle()) + ".md";
 	}
 }

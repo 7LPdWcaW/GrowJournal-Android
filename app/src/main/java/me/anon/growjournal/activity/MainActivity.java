@@ -1,6 +1,7 @@
 package me.anon.growjournal.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -11,11 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import me.anon.growjournal.R;
+import me.anon.growjournal.fragment.PlantsFragment;
 import me.anon.growjournal.fragment.PostsFragment;
 import me.anon.growjournal.manager.GitManager;
+import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.view.PagerSlidingTabStrip;
 
 /**
@@ -31,6 +35,14 @@ public class MainActivity extends AppCompatActivity
 		setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
 		setTitle("Grow Journal");
 
+		if (savedInstanceState == null)
+		{
+			setupPages();
+		}
+	}
+
+	private void setupPages()
+	{
 		ViewPager pager = (ViewPager)findViewById(R.id.view_pager);
 		pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager())
 		{
@@ -40,6 +52,8 @@ public class MainActivity extends AppCompatActivity
 				{
 					case 0:
 						return PostsFragment.newInstance();
+					case 1:
+						return PlantsFragment.newInstance();
 				}
 
 				return new Fragment();
@@ -61,12 +75,41 @@ public class MainActivity extends AppCompatActivity
 
 			@Override public int getCount()
 			{
-				return 2;
+				return isGrowTrackerInstalled() || PlantManager.getInstance().getPlants().size() > 0 ? 2 : 1;
 			}
 		});
 
 		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)findViewById(R.id.tabs);
 		tabs.setViewPager(pager);
+
+		if (pager.getAdapter().getCount() == 1)
+		{
+			tabs.setVisibility(View.GONE);
+		}
+		else
+		{
+			getSupportActionBar().setElevation(0f);
+		}
+	}
+
+	private boolean isGrowTrackerInstalled()
+	{
+		boolean installed = false;
+		try
+		{
+			getPackageManager().getPackageInfo("me.anon.grow", 0);
+			installed = true;
+		}
+		catch (PackageManager.NameNotFoundException e){}
+
+		try
+		{
+			getPackageManager().getPackageInfo("me.anon.grow.debug", 0);
+			installed = true;
+		}
+		catch (PackageManager.NameNotFoundException e){}
+
+		return installed;
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu)
