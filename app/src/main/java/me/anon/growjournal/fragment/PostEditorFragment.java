@@ -229,7 +229,7 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 			PostsManager.getInstance().addPost(post);
 		}
 
-		if (!post.getTitle().equalsIgnoreCase(title.getText().toString()))
+		if (!TextUtils.isEmpty(post.getTitle()) && !post.getTitle().equalsIgnoreCase(title.getText().toString()))
 		{
 			Post.delete(post, PostsManager.folderPath);
 		}
@@ -240,6 +240,6 @@ public class PostEditorFragment extends Fragment implements View.OnClickListener
 		post.setBody(body);
 		post.setPublishStatus(Post.PublishStatus.DRAFT);
 
-		PostsManager.getInstance().save();
+		PostsManager.getInstance().save(post);
 	}
 }

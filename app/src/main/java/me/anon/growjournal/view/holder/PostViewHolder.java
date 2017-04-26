@@ -54,7 +54,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder
 		DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(itemView.getContext());
 		DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(itemView.getContext());
 
-		Date updateDate = new Date(model.getUpdateDate());
+		Date updateDate = new Date(model.getPublishDate());
 		Calendar actionCalendar = GregorianCalendar.getInstance();
 		actionCalendar.setTime(updateDate);
 		date.setText(dateFormat.format(updateDate) + " " + timeFormat.format(updateDate));

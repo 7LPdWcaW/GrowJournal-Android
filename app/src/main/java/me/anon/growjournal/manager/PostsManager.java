@@ -46,12 +46,19 @@ public class PostsManager
 		}
 	}
 
-	public void save()
+	public void save(Post post)
+	{
+		Post.saveTo(post, folderPath);
+		GitManager.getInstance().commitChanges();
+	}
+
+	public void saveAll()
 	{
 		for (Post post : posts)
 		{
 			Post.saveTo(post, folderPath);
-			GitManager.getInstance().commitChanges();
 		}
+
+		GitManager.getInstance().commitChanges();
 	}
 }

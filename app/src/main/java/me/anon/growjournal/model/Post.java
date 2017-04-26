@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.anon.growjournal.data.DefaultHashMap;
 import me.anon.growjournal.helper.JekyllUtils;
 import me.anon.growjournal.manager.FileManager;
 
@@ -24,12 +25,12 @@ import me.anon.growjournal.manager.FileManager;
 public class Post
 {
 	@Getter @Setter private String id = UUID.randomUUID().toString();
-	@Getter @Setter private String title;
-	@Getter @Setter private String body;
+	@Getter @Setter private String title = "";
+	@Getter @Setter private String body = "";
 	@Getter @Setter private ArrayList<String> categories = new ArrayList<>();
-	@Getter @Setter private long publishDate;
-	@Getter @Setter private long updateDate;
-	@Getter @Setter private PublishStatus publishStatus;
+	@Getter @Setter private long publishDate = System.currentTimeMillis();
+	@Getter @Setter private long updateDate = System.currentTimeMillis();
+	@Getter @Setter private PublishStatus publishStatus = PublishStatus.DRAFT;
 
 	public static enum PublishStatus
 	{
@@ -48,16 +49,35 @@ public class Post
 
 			int start = postBody.indexOf("---", 0);
 			int end = postBody.indexOf("---", start + 3);
-			String configBlock = postBody.substring(start, end);
-			Map configYaml = (Map)new Yaml().load(configBlock);
 
-			post.setTitle((String)configYaml.get("title"));
+			DefaultHashMap configYaml = new DefaultHashMap();
 
-			String[] categories = ((String)configYaml.get("categories")).split(" ");
+			if (start >= 0 && end >= 0)
+			{
+				String configBlock = postBody.substring(start, end);
+				configYaml = new DefaultHashMap((Map)new Yaml().load(configBlock));
+			}
+
+			post.setId((String)configYaml.getString("id", UUID.randomUUID().toString()));
+			post.setTitle((String)configYaml.getString("title", ""));
+
+			String[] categories = ((String)configYaml.getString("categories", "")).split(" ");
 			post.setCategories(new ArrayList<String>(Arrays.asList(categories)));
 
-			post.setBody(postBody.substring(end + 3));
-			post.setPublishDate(((Date)configYaml.get("date")).getTime());
+			post.setBody(postBody.substring(end > -1 ? (end + 3) : 0).trim());
+
+			if (configYaml.containsKey("date"))
+			{
+				long date = new Date().getTime();
+
+				if (configYaml.getString("date", null) == null)
+				{
+					date = new SimpleDateFormat("yyyy-MM-dd").parse(configYaml.getString("date", "")).getTime();
+				}
+
+				post.setPublishDate(date);
+			}
+
 			post.setUpdateDate(new File(filePath).lastModified());
 
 			return post;
@@ -72,12 +92,20 @@ public class Post
 
 	public static void saveTo(Post post, String filePath)
 	{
-		StringBuilder body = new StringBuilder("---\r\n");
-		body.append("title: ").append(post.getTitle());
+		StringBuilder body = new StringBuilder("---");
+		body.append("\r\nid: ").append(post.getId());
+		body.append("\r\ntitle: ").append(post.getTitle());
 		body.append("\r\ndate: ").append(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(post.getPublishDate())));
-		body.append("\r\ncategories: ").append(StringUtils.join(post.getCategories(), " "));
+
+		if (post.getCategories().size() > 0)
+		{
+			body.append("\r\ncategories: ").append(StringUtils.join(post.getCategories(), " "));
+		}
+
 		body.append("\r\n---\r\n");
-		FileManager.getInstance().writeFile(filePath + "/" + Post.generateTitle(post), body);
+		body.append(post.getBody());
+		String bodyStr = body.toString().trim();
+		FileManager.getInstance().writeFile(filePath + "/" + Post.generateTitle(post), bodyStr);
 	}
 
 	public static void delete(Post post, String folderPath)
