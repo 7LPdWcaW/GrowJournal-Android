@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import me.anon.growjournal.R;
@@ -34,6 +35,14 @@ public class MainActivity extends AppCompatActivity
 		setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
 		setTitle("Grow Journal");
 
+		if (savedInstanceState == null)
+		{
+			setupPages();
+		}
+	}
+
+	private void setupPages()
+	{
 		ViewPager pager = (ViewPager)findViewById(R.id.view_pager);
 		pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager())
 		{
@@ -72,19 +81,35 @@ public class MainActivity extends AppCompatActivity
 
 		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)findViewById(R.id.tabs);
 		tabs.setViewPager(pager);
+
+		if (pager.getAdapter().getCount() == 1)
+		{
+			tabs.setVisibility(View.GONE);
+		}
+		else
+		{
+			getSupportActionBar().setElevation(0f);
+		}
 	}
 
 	private boolean isGrowTrackerInstalled()
 	{
+		boolean installed = false;
 		try
 		{
 			getPackageManager().getPackageInfo("me.anon.grow", 0);
-			return true;
+			installed = true;
 		}
-		catch (PackageManager.NameNotFoundException e)
+		catch (PackageManager.NameNotFoundException e){}
+
+		try
 		{
-			return false;
+			getPackageManager().getPackageInfo("me.anon.grow.debug", 0);
+			installed = true;
 		}
+		catch (PackageManager.NameNotFoundException e){}
+
+		return installed;
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu)

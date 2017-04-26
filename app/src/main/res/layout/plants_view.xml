@@ -6,6 +6,33 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 >
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/empty"
+		android:orientation="vertical"
+		android:layout_gravity="center"
+		android:visibility="gone"
+		android:padding="12dp"
+	>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:text="No plant data available"
+		/>
+
+		<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/request"
+			android:text="Import from GrowTracker"
+			android:layout_gravity="center_horizontal"
+			android:layout_marginTop="8dp"
+			style="@style/Widget.AppCompat.Button.Borderless.Colored"
+		/>
+	</LinearLayout>
+
 	<android.support.v7.widget.RecyclerView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"

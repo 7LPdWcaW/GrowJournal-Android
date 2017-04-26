@@ -42,7 +42,7 @@ public class PlantManager
 		{
 			plants = new Gson().fromJson(new FileReader(new File(filePath)), new TypeToken<ArrayList<Plant>>(){}.getType());
 		}
-		catch (FileNotFoundException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

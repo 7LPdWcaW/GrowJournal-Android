@@ -171,7 +171,7 @@ public class GitManager
 				}).start();
 			}
 		}
-		catch (GitAPIException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

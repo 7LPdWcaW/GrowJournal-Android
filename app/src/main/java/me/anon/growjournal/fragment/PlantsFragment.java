@@ -1,5 +1,7 @@
 package me.anon.growjournal.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.adapter.PlantsAdapter;
+import me.anon.growjournal.receiver.GrowTrackerReceiver;
 
 /**
  * // TODO: Add class description
@@ -22,6 +26,9 @@ public class PlantsFragment extends Fragment
 		return new PlantsFragment();
 	}
 
+	private static final int REQUEST_IMPORT= 0x1;
+
+	private View empty;
 	private RecyclerView recyclerView;
 	private PlantsAdapter adapter;
 
@@ -29,6 +36,14 @@ public class PlantsFragment extends Fragment
 	{
 		View view = inflater.inflate(R.layout.plants_view, container, false);
 		recyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
+		empty = view.findViewById(R.id.empty);
+		view.findViewById(R.id.request).setOnClickListener(new View.OnClickListener()
+		{
+			@Override public void onClick(View v)
+			{
+				requestImport();
+			}
+		});
 
 		return view;
 	}
@@ -48,5 +63,46 @@ public class PlantsFragment extends Fragment
 		adapter = new PlantsAdapter();
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerView.setAdapter(adapter);
+
+		checkState();
+	}
+
+	private void checkState()
+	{
+		if (adapter.getItemCount() == 0)
+		{
+			empty.setVisibility(View.VISIBLE);
+			recyclerView.setVisibility(View.GONE);
+		}
+		else
+		{
+			empty.setVisibility(View.GONE);
+			recyclerView.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void requestImport()
+	{
+		Intent request = new Intent("me.anon.grow.ACTION_REQUEST_PLANTS");
+		request.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+		startActivityForResult(Intent.createChooser(request, "Import from"), REQUEST_IMPORT);
+	}
+
+	@Override public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (requestCode == REQUEST_IMPORT && resultCode == Activity.RESULT_OK
+		&& data.getExtras() != null && data.getExtras().containsKey("me.anon.grow.PLANT_LIST"))
+		{
+			if (data.getExtras().getBoolean("me.anon.grow.ENCRYPTED", false))
+			{
+				Toast.makeText(getActivity(), "Unable to import encrypted data", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			new GrowTrackerReceiver().onReceive(getActivity(), data);
+			initialiseAdapter();
+		}
+
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }

@@ -17,6 +17,9 @@ public class GrowTrackerReceiver extends BroadcastReceiver
 {
 	@Override public void onReceive(Context context, Intent intent)
 	{
+		boolean isEncrypted = intent.getExtras().getBoolean("me.anon.grow.ENCRYPTED", false);
+		if (isEncrypted) return;
+
 		if (intent.getExtras().containsKey("me.anon.grow.PLANT_LIST"))
 		{
 			String plantData = intent.getExtras().getString("me.anon.grow.PLANT_LIST", "");
