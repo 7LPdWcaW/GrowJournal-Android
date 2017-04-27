@@ -203,6 +203,7 @@
 				android:layout_gravity="center_vertical"
 				android:layout_alignParentRight="true"
 				android:layout_centerVertical="true"
+				android:layout_marginLeft="8dp"
 				android:background="?selectableItemBackgroundBorderless"
 			/>
 
@@ -226,6 +227,25 @@
 				android:layout_toRightOf="@id/finish"
 			/>
 		</RelativeLayout>
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/permalink"
+			android:background="@android:color/transparent"
+			android:gravity="left|top"
+			android:imeOptions="flagNoExtractUi"
+			android:paddingLeft="18dp"
+			android:paddingRight="18dp"
+			android:paddingTop="4dp"
+			android:paddingBottom="4dp"
+			android:textColor="#636363"
+			android:textColorHint="#878787"
+			android:textStyle="italic"
+			android:fontFamily="sans-serif-light"
+			android:singleLine="false"
+			android:hint="/permalink/"
+		/>
 
 		<EditText
 			android:layout_width="match_parent"

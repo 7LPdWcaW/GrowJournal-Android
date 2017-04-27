@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.fragment.PlantsFragment;
-import me.anon.growjournal.fragment.PostsFragment;
+import me.anon.growjournal.fragment.PagesFragment;
 import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.view.PagerSlidingTabStrip;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
 				switch (position)
 				{
 					case 0:
-						return PostsFragment.newInstance();
+						return PagesFragment.newInstance();
 					case 1:
 						return PlantsFragment.newInstance();
 				}
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
 				switch (position)
 				{
 					case 0:
-						return "Posts";
+						return "Pages";
 
 					case 1:
 						return "Plants";

@@ -22,15 +22,17 @@ import me.anon.growjournal.manager.FileManager;
 /**
  * // TODO: Add class description
  */
-public class Post
+public class Post extends Page
 {
-	@Getter @Setter private String id = UUID.randomUUID().toString();
-	@Getter @Setter private String title = "";
-	@Getter @Setter private String body = "";
 	@Getter @Setter private ArrayList<String> categories = new ArrayList<>();
 	@Getter @Setter private long publishDate = System.currentTimeMillis();
 	@Getter @Setter private long updateDate = System.currentTimeMillis();
 	@Getter @Setter private PublishStatus publishStatus = PublishStatus.DRAFT;
+
+	public Post()
+	{
+		setLayout("page");
+	}
 
 	public static enum PublishStatus
 	{
@@ -60,6 +62,7 @@ public class Post
 
 			post.setId((String)configYaml.getString("id", UUID.randomUUID().toString()));
 			post.setTitle((String)configYaml.getString("title", ""));
+			post.setLayout((String)configYaml.getString("layout", "page"));
 
 			String[] categories = ((String)configYaml.getString("categories", "")).split(" ");
 			post.setCategories(new ArrayList<String>(Arrays.asList(categories)));
@@ -95,6 +98,7 @@ public class Post
 		StringBuilder body = new StringBuilder("---");
 		body.append("\r\nid: ").append(post.getId());
 		body.append("\r\ntitle: ").append(post.getTitle());
+		body.append("\r\nlayout: ").append(post.getLayout());
 		body.append("\r\ndate: ").append(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(post.getPublishDate())));
 
 		if (post.getCategories().size() > 0)
@@ -105,16 +109,16 @@ public class Post
 		body.append("\r\n---\r\n");
 		body.append(post.getBody());
 		String bodyStr = body.toString().trim();
-		FileManager.getInstance().writeFile(filePath + "/" + Post.generateTitle(post), bodyStr);
+		FileManager.getInstance().writeFile(filePath + "/" + Post.generateFilename(post) + ".md", bodyStr);
 	}
 
-	public static void delete(Post post, String folderPath)
+	public static void deletePost(Post post, String folderPath)
 	{
-		FileManager.getInstance().deleteRecursive(new File(folderPath, Post.generateTitle(post)));
+		FileManager.getInstance().deleteRecursive(new File(folderPath, Post.generateFilename(post) + ".md"));
 	}
 
-	public static String generateTitle(Post post)
+	public static String generateFilename(Post post)
 	{
-		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(post.getPublishDate())) + "-" + JekyllUtils.urlCase(post.getTitle()) + ".md";
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(post.getPublishDate())) + "-" + JekyllUtils.urlCase(post.getTitle());
 	}
 }

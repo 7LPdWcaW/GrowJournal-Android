@@ -3,7 +3,6 @@ package me.anon.growjournal.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,30 +10,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import me.anon.growjournal.R;
+import me.anon.growjournal.activity.ManagePageActivity;
 import me.anon.growjournal.activity.ManagePostActivity;
-import me.anon.growjournal.adapter.PostsAdapter;
+import me.anon.growjournal.adapter.PagesAdapter;
+import me.anon.growjournal.manager.PageManager;
 import me.anon.growjournal.manager.PostsManager;
+import me.anon.growjournal.model.Page;
 
 /**
  * // TODO: Add class description
  */
-public class PostsFragment extends Fragment
+public class PagesFragment extends Fragment
 {
-	public static PostsFragment newInstance()
+	public static PagesFragment newInstance()
 	{
-		return new PostsFragment();
+		return new PagesFragment();
 	}
 
 	private RecyclerView recyclerView;
-	private PostsAdapter adapter;
+	private PagesAdapter adapter;
+	private FloatingActionMenu actionMenu;
 	private FloatingActionButton addPost;
+	private FloatingActionButton addPage;
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.posts_view, container, false);
+		View view = inflater.inflate(R.layout.pages_view, container, false);
 		recyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
+		actionMenu = (FloatingActionMenu)view.findViewById(R.id.menu);
 		addPost = (FloatingActionButton)view.findViewById(R.id.new_post);
+		addPage = (FloatingActionButton)view.findViewById(R.id.new_page);
 
 		return view;
 	}
@@ -45,7 +58,7 @@ public class PostsFragment extends Fragment
 
 		if (savedInstanceState == null)
 		{
-			adapter = new PostsAdapter();
+			adapter = new PagesAdapter();
 
 			recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 			recyclerView.setAdapter(adapter);
@@ -55,8 +68,19 @@ public class PostsFragment extends Fragment
 		{
 			@Override public void onClick(View v)
 			{
+				actionMenu.close(true);
 				Intent newPost = new Intent(v.getContext(), ManagePostActivity.class);
 				startActivity(newPost);
+			}
+		});
+
+		addPage.setOnClickListener(new View.OnClickListener()
+		{
+			@Override public void onClick(View v)
+			{
+				actionMenu.close(true);
+				Intent newPage = new Intent(v.getContext(), ManagePageActivity.class);
+				startActivity(newPage);
 			}
 		});
 	}
@@ -67,7 +91,21 @@ public class PostsFragment extends Fragment
 
 		if (adapter != null)
 		{
-			adapter.setItems(PostsManager.getInstance().getPosts());
+			adapter.clearItems();
+			adapter.addItem("Posts");
+			adapter.addItems(PostsManager.getInstance().getPosts());
+
+			ArrayList<Page> pages = new ArrayList<>(PageManager.getInstance().getPages());
+			Collections.sort(pages, new Comparator<Page>()
+			{
+				@Override public int compare(Page o1, Page o2)
+				{
+					return o1.getPermalink().compareTo(o2.getPermalink());
+				}
+			});
+
+			adapter.addItem("Pages");
+			adapter.addItems(pages);
 			adapter.notifyDataSetChanged();
 		}
 	}
