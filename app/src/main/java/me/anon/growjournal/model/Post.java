@@ -112,7 +112,7 @@ public class Post extends Page
 		FileManager.getInstance().writeFile(filePath + "/" + Post.generateFilename(post) + ".md", bodyStr);
 	}
 
-	public static void delete(Post post, String folderPath)
+	public static void deletePost(Post post, String folderPath)
 	{
 		FileManager.getInstance().deleteRecursive(new File(folderPath, Post.generateFilename(post) + ".md"));
 	}

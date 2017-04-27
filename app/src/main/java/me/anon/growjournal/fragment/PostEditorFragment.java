@@ -44,7 +44,7 @@ public class PostEditorFragment extends PageEditorFragment
 				@Override public void afterTextChanged(Editable s)
 				{
 					Post tmp = new Post();
-					tmp.setTitle(s.toString());
+					tmp.setTitle(s.toString().trim());
 					permalink.setText(Post.generateFilename(tmp));
 				}
 			});
@@ -68,7 +68,7 @@ public class PostEditorFragment extends PageEditorFragment
 
 		if (!TextUtils.isEmpty(getPage().getTitle()) && !getPage().getTitle().equalsIgnoreCase(title.getText().toString()))
 		{
-			Post.delete(getPage(), PostsManager.folderPath);
+			Post.deletePost((Post)getPage(), PostsManager.folderPath);
 		}
 
 		getPage().setTitle(title.getText().toString());

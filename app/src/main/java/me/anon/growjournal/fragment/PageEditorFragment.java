@@ -63,6 +63,7 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.page_editor_view, container, false);
+
 		title = (EditText)view.findViewById(R.id.title);
 		permalink = (EditText)view.findViewById(R.id.permalink);
 		editor = (EditText)view.findViewById(R.id.editor);
@@ -282,6 +283,11 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 		{
 			page = new Page();
 			PageManager.getInstance().addPage(page);
+		}
+
+		if (!TextUtils.isEmpty(getPage().getPermalink()) && !getPage().getPermalink().equalsIgnoreCase(permalink.getText().toString()))
+		{
+			Page.deletePage(getPage(), PageManager.folderPath);
 		}
 
 		page.setPermalink(permalink.getText().toString());

@@ -83,7 +83,7 @@ public class Page
 		FileManager.getInstance().writeFile(filePath + "/" + JekyllUtils.urlCase(page.getTitle()) + ".md", bodyStr);
 	}
 
-	public static void delete(Page page, String folderPath)
+	public static void deletePage(Page page, String folderPath)
 	{
 		FileManager.getInstance().deleteRecursive(new File(folderPath, JekyllUtils.urlCase(page.getTitle()) + ".md"));
 	}
