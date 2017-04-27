@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.activity.ManagePostActivity;
-import me.anon.growjournal.adapter.PostsAdapter;
+import me.anon.growjournal.adapter.PagesAdapter;
+import me.anon.growjournal.manager.PageManager;
 import me.anon.growjournal.manager.PostsManager;
 
 /**
@@ -27,7 +28,7 @@ public class PostsFragment extends Fragment
 	}
 
 	private RecyclerView recyclerView;
-	private PostsAdapter adapter;
+	private PagesAdapter adapter;
 	private FloatingActionButton addPost;
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -45,7 +46,7 @@ public class PostsFragment extends Fragment
 
 		if (savedInstanceState == null)
 		{
-			adapter = new PostsAdapter();
+			adapter = new PagesAdapter();
 
 			recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 			recyclerView.setAdapter(adapter);
@@ -67,7 +68,9 @@ public class PostsFragment extends Fragment
 
 		if (adapter != null)
 		{
-			adapter.setItems(PostsManager.getInstance().getPosts());
+			adapter.clearItems();
+			adapter.addItems(PostsManager.getInstance().getPosts());
+			adapter.addItems(PageManager.getInstance().getPages());
 			adapter.notifyDataSetChanged();
 		}
 	}

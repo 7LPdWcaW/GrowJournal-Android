@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import lombok.Getter;
 import me.anon.growjournal.manager.GitManager;
+import me.anon.growjournal.manager.PageManager;
 import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.manager.PostsManager;
 
@@ -28,10 +29,11 @@ public class MainApplication extends Application
 
 		PostsManager.folderPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_posts/";
 		PlantManager.filePath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_data/plants.json";
-		PlantManager.pagesPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_pages/";
 		PlantManager.imagesPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/assets/";
+		PageManager.folderPath = GitManager.getInstance().getLocalRepo().getAbsolutePath() + "/_pages/";
 		PlantManager.getInstance().load();
 		PostsManager.getInstance().load();
+		PageManager.getInstance().load();
 
 		displayImageOptions = new DisplayImageOptions.Builder()
 			.cacheInMemory(true)
