@@ -1,9 +1,11 @@
 package me.anon.growjournal.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.adapter.PlantsAdapter;
+import me.anon.growjournal.data.ProgressListener;
+import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.receiver.GrowTrackerReceiver;
 
 /**
@@ -29,6 +33,7 @@ public class PlantsFragment extends Fragment
 	private static final int REQUEST_IMPORT= 0x1;
 
 	private View empty;
+	private FloatingActionButton reimport;
 	private RecyclerView recyclerView;
 	private PlantsAdapter adapter;
 
@@ -37,7 +42,17 @@ public class PlantsFragment extends Fragment
 		View view = inflater.inflate(R.layout.plants_view, container, false);
 		recyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
 		empty = view.findViewById(R.id.empty);
+		reimport = (FloatingActionButton)view.findViewById(R.id.reimport);
+
 		view.findViewById(R.id.request).setOnClickListener(new View.OnClickListener()
+		{
+			@Override public void onClick(View v)
+			{
+				requestImport();
+			}
+		});
+
+		reimport.setOnClickListener(new View.OnClickListener()
 		{
 			@Override public void onClick(View v)
 			{
@@ -73,11 +88,13 @@ public class PlantsFragment extends Fragment
 		{
 			empty.setVisibility(View.VISIBLE);
 			recyclerView.setVisibility(View.GONE);
+			reimport.setVisibility(View.GONE);
 		}
 		else
 		{
 			empty.setVisibility(View.GONE);
 			recyclerView.setVisibility(View.VISIBLE);
+			reimport.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -100,7 +117,45 @@ public class PlantsFragment extends Fragment
 			}
 
 			new GrowTrackerReceiver().onReceive(getActivity(), data);
-			initialiseAdapter();
+			PlantManager.getInstance().importImages(new ProgressListener()
+			{
+				private ProgressDialog progressDialog = null;
+
+				@Override public void onProgressUpdated(final int progress)
+				{
+					getActivity().runOnUiThread(new Runnable()
+					{
+						@Override public void run()
+						{
+							if (getActivity() == null) return;
+
+							if (progressDialog == null)
+							{
+								progressDialog = new ProgressDialog(getActivity());
+								progressDialog.setMessage("Importing plant data");
+								progressDialog.setProgress(0);
+								progressDialog.setMax(100);
+								progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+								progressDialog.show();
+							}
+
+							if (progressDialog != null)
+							{
+								progressDialog.setProgress(progress);
+
+								if (progress == 100)
+								{
+									progressDialog.dismiss();
+									Toast.makeText(getActivity(), "Import complete", Toast.LENGTH_SHORT).show();
+								}
+							}
+						}
+					});
+				}
+			});
+
+			adapter.notifyDataSetChanged();
+			checkState();
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);

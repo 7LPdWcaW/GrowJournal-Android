@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import me.anon.growjournal.data.ProgressListener;
 import me.anon.growjournal.helper.JekyllUtils;
 import me.anon.growjournal.model.tracker.Plant;
 
@@ -51,6 +52,47 @@ public class PlantManager
 		{
 			plants = new ArrayList<>();
 		}
+	}
+
+	public void importImages(final ProgressListener progressListener)
+	{
+		new Thread(new Runnable()
+		{
+			@Override public void run()
+			{
+				synchronized (PlantManager.this)
+				{
+					float total = 0;
+					for (Plant plant : plants)
+					{
+						total += plant.getImages().size();
+					}
+
+					for (Plant plant : plants)
+					{
+						synchronized (PlantManager.this)
+						{
+							float index = 0;
+							for (String imagePath : plant.getImages())
+							{
+								String[] folders = imagePath.split("/");
+								String filePath = folders[folders.length - 2] + "/" + folders[folders.length - 1];
+								String thumbPath = folders[folders.length - 2] + "/thumb/" + folders[folders.length - 1];
+
+								if (!new File(imagesPath, filePath).exists() || !new File(imagePath, thumbPath).exists())
+								{
+									writeImage(imagePath);
+								}
+
+								index++;
+
+								progressListener.onProgressUpdated((int)((index / total) * 100f));
+							}
+						}
+					}
+				}
+			}
+		}).start();
 	}
 
 	public void writeImage(String imagePath)

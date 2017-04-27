@@ -11,6 +11,7 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import me.anon.growjournal.MainApplication;
 import me.anon.growjournal.R;
+import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.model.tracker.Plant;
 
 /**
@@ -35,7 +36,10 @@ public class PlantViewHolder extends RecyclerView.ViewHolder
 		if (model.getImages() != null && model.getImages().size() > 0)
 		{
 			ImageAware imageAware = new ImageViewAware(image, true);
-			ImageLoader.getInstance().displayImage("file://" + model.getImages().get(model.getImages().size() - 1), imageAware, MainApplication.getDisplayImageOptions());
+
+			String[] folders = model.getImages().get(model.getImages().size() - 1).split("/");
+			String thumbPath = folders[folders.length - 2] + "/thumb/" + folders[folders.length - 1];
+			ImageLoader.getInstance().displayImage("file://" + PlantManager.imagesPath + thumbPath, imageAware, MainApplication.getDisplayImageOptions());
 		}
 		else
 		{
