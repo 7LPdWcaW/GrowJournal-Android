@@ -144,6 +144,7 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 				if (!out.startsWith("/"))
 				{
 					out = "/" + out;
+					selection++;
 				}
 
 				if (!out.endsWith("/"))
@@ -251,8 +252,10 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 		}
 		else if (v == save)
 		{
-			save();
-			getActivity().finish();
+			if (save())
+			{
+				getActivity().finish();
+			}
 		}
 		else if (v == formatNumber)
 		{
@@ -260,18 +263,18 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 		}
 	}
 
-	protected void save()
+	protected boolean save()
 	{
 		if (TextUtils.isEmpty(title.getText()))
 		{
 			title.setError("Title required");
-			return;
+			return false;
 		}
 
 		if (TextUtils.isEmpty(permalink.getText()))
 		{
 			permalink.setError("Permalink is required");
-			return;
+			return false;
 		}
 
 		boolean newPage = page == null;
@@ -287,5 +290,7 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 
 		page.setBody(body);
 		PageManager.getInstance().save(page);
+
+		return true;
 	}
 }

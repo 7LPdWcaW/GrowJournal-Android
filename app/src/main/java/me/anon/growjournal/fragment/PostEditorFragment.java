@@ -28,12 +28,12 @@ public class PostEditorFragment extends PageEditorFragment
 		permalink.setVisibility(View.GONE);
 	}
 
-	@Override protected void save()
+	@Override protected boolean save()
 	{
 		if (TextUtils.isEmpty(title.getText()))
 		{
 			title.setError("Title required");
-			return;
+			return false;
 		}
 
 		boolean newPost = getPage() == null;
@@ -55,5 +55,7 @@ public class PostEditorFragment extends PageEditorFragment
 		((Post)getPage()).setPublishStatus(Post.PublishStatus.DRAFT);
 
 		PostsManager.getInstance().save((Post)getPage());
+
+		return true;
 	}
 }
