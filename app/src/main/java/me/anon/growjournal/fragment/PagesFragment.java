@@ -20,11 +20,11 @@ import me.anon.growjournal.manager.PostsManager;
 /**
  * // TODO: Add class description
  */
-public class PostsFragment extends Fragment
+public class PagesFragment extends Fragment
 {
-	public static PostsFragment newInstance()
+	public static PagesFragment newInstance()
 	{
-		return new PostsFragment();
+		return new PagesFragment();
 	}
 
 	private RecyclerView recyclerView;
@@ -33,7 +33,7 @@ public class PostsFragment extends Fragment
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.posts_view, container, false);
+		View view = inflater.inflate(R.layout.pages_view, container, false);
 		recyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
 		addPost = (FloatingActionButton)view.findViewById(R.id.new_post);
 
