@@ -17,6 +17,7 @@ import android.widget.Toast;
 import me.anon.growjournal.R;
 import me.anon.growjournal.adapter.PlantsAdapter;
 import me.anon.growjournal.data.ProgressListener;
+import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.receiver.GrowTrackerReceiver;
 
@@ -147,6 +148,8 @@ public class PlantsFragment extends Fragment
 								{
 									progressDialog.dismiss();
 									Toast.makeText(getActivity(), "Import complete", Toast.LENGTH_SHORT).show();
+
+									GitManager.getInstance().commitChanges();
 								}
 							}
 						}
