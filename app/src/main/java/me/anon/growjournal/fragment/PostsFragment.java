@@ -69,7 +69,9 @@ public class PostsFragment extends Fragment
 		if (adapter != null)
 		{
 			adapter.clearItems();
+			adapter.addItem("Posts");
 			adapter.addItems(PostsManager.getInstance().getPosts());
+			adapter.addItem("Pages");
 			adapter.addItems(PageManager.getInstance().getPages());
 			adapter.notifyDataSetChanged();
 		}
