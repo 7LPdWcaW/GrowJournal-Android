@@ -14,13 +14,38 @@
 		android:clipToPadding="false"
 	/>
 
-	<android.support.design.widget.FloatingActionButton
+	<com.github.clans.fab.FloatingActionMenu
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/new_post"
+		android:id="@+id/menu"
 		android:layout_gravity="bottom|right"
 		android:layout_margin="12dp"
-		android:src="@drawable/ic_new_post"
-		app:backgroundTint="@color/colorPrimary"
-	/>
+		app:menu_colorNormal="@color/colorPrimary"
+		app:menu_colorRipple="@color/colorPrimaryLight"
+		app:menu_colorPressed="@color/colorPrimaryLight"
+	>
+		<com.github.clans.fab.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/new_post"
+			android:src="@drawable/ic_new_post"
+			app:fab_label="New Post"
+			app:fab_size="mini"
+			app:fab_colorNormal="@color/colorPrimary"
+			app:fab_colorRipple="@color/colorPrimaryLight"
+			app:fab_colorPressed="@color/colorPrimaryLight"
+		/>
+
+		<com.github.clans.fab.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/new_page"
+			android:src="@drawable/ic_new_page"
+			app:fab_label="New Page"
+			app:fab_size="mini"
+			app:fab_colorNormal="@color/colorPrimary"
+			app:fab_colorRipple="@color/colorPrimaryLight"
+			app:fab_colorPressed="@color/colorPrimaryLight"
+		/>
+	</com.github.clans.fab.FloatingActionMenu>
 </FrameLayout>

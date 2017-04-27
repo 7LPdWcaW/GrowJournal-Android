@@ -62,7 +62,7 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.post_editor_view, container, false);
+		View view = inflater.inflate(R.layout.page_editor_view, container, false);
 		title = (EditText)view.findViewById(R.id.title);
 		permalink = (EditText)view.findViewById(R.id.permalink);
 		editor = (EditText)view.findViewById(R.id.editor);
