@@ -114,7 +114,7 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 		}
 	}
 
-	private void populateUi()
+	protected void populateUi()
 	{
 		if (page != null)
 		{
@@ -152,7 +152,7 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 					out += "/";
 				}
 
-				out = out.toLowerCase().replaceAll("[^0-9a-z/_]", "_");
+				out = out.toLowerCase().replaceAll("[^0-9a-z/-]", "-");
 				permalink.setText(out);
 				permalink.addTextChangedListener(this);
 			}

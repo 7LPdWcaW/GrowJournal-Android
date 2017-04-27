@@ -109,16 +109,16 @@ public class Post extends Page
 		body.append("\r\n---\r\n");
 		body.append(post.getBody());
 		String bodyStr = body.toString().trim();
-		FileManager.getInstance().writeFile(filePath + "/" + Post.generateTitle(post), bodyStr);
+		FileManager.getInstance().writeFile(filePath + "/" + Post.generateFilename(post) + ".md", bodyStr);
 	}
 
 	public static void delete(Post post, String folderPath)
 	{
-		FileManager.getInstance().deleteRecursive(new File(folderPath, Post.generateTitle(post)));
+		FileManager.getInstance().deleteRecursive(new File(folderPath, Post.generateFilename(post) + ".md"));
 	}
 
-	public static String generateTitle(Post post)
+	public static String generateFilename(Post post)
 	{
-		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(post.getPublishDate())) + "-" + JekyllUtils.urlCase(post.getTitle()) + ".md";
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(post.getPublishDate())) + "-" + JekyllUtils.urlCase(post.getTitle());
 	}
 }

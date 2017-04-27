@@ -1,9 +1,8 @@
 package me.anon.growjournal.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.view.View;
+import android.text.TextWatcher;
 
 import me.anon.growjournal.manager.PostsManager;
 import me.anon.growjournal.model.Post;
@@ -21,11 +20,35 @@ public class PostEditorFragment extends PageEditorFragment
 		return fragment;
 	}
 
-	@Override public void onActivityCreated(@Nullable Bundle savedInstanceState)
+	@Override protected void populateUi()
 	{
-		super.onActivityCreated(savedInstanceState);
+		super.populateUi();
 
-		permalink.setVisibility(View.GONE);
+		if (getPage() != null)
+		{
+			permalink.setText(Post.generateFilename((Post)getPage()));
+			permalink.setEnabled(false);
+
+			title.addTextChangedListener(new TextWatcher()
+			{
+				@Override public void beforeTextChanged(CharSequence s, int start, int count, int after)
+				{
+
+				}
+
+				@Override public void onTextChanged(CharSequence s, int start, int before, int count)
+				{
+
+				}
+
+				@Override public void afterTextChanged(Editable s)
+				{
+					Post tmp = new Post();
+					tmp.setTitle(s.toString());
+					permalink.setText(Post.generateFilename(tmp));
+				}
+			});
+		}
 	}
 
 	@Override protected boolean save()
