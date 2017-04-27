@@ -229,6 +229,25 @@
 
 		<EditText
 			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/permalink"
+			android:background="@android:color/transparent"
+			android:gravity="left|top"
+			android:imeOptions="flagNoExtractUi"
+			android:paddingLeft="18dp"
+			android:paddingRight="18dp"
+			android:paddingTop="4dp"
+			android:paddingBottom="4dp"
+			android:textColor="#636363"
+			android:textColorHint="#878787"
+			android:textStyle="italic"
+			android:fontFamily="sans-serif-light"
+			android:inputType="textUri"
+			android:hint="Permalink"
+		/>
+
+		<EditText
+			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:id="@+id/editor"
 			android:background="@android:color/transparent"

@@ -39,7 +39,7 @@ public class PagesAdapter extends RecyclerView.Adapter
 		{
 			default:
 			case TYPE_PAGE:
-				return new PageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false));
+				return new PageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.page_item, parent, false));
 
 			case TYPE_POST:
 				return new PostViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false));

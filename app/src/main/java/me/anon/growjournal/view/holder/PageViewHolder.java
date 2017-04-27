@@ -25,6 +25,7 @@ public class PageViewHolder extends RecyclerView.ViewHolder
 {
 	private TextView title;
 	private TextView summary;
+	private TextView permalink;
 
 	// temp variables for touch location
 	private transient int x, y;
@@ -35,12 +36,14 @@ public class PageViewHolder extends RecyclerView.ViewHolder
 
 		title = (TextView)itemView.findViewById(R.id.title);
 		summary = (TextView)itemView.findViewById(R.id.summary);
+		permalink = (TextView)itemView.findViewById(R.id.permalink);
 	}
 
 	public void populate(final Page model)
 	{
 		title.setText(model.getTitle());
 		summary.setText(model.getBody());
+		permalink.setText(model.getPermalink());
 
 		itemView.setOnClickListener(new View.OnClickListener()
 		{

@@ -3,7 +3,9 @@ package me.anon.growjournal.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,12 +57,14 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 
 	protected View headingSizes;
 	protected EditText title;
+	protected EditText permalink;
 	protected EditText editor;
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.post_editor_view, container, false);
 		title = (EditText)view.findViewById(R.id.title);
+		permalink = (EditText)view.findViewById(R.id.permalink);
 		editor = (EditText)view.findViewById(R.id.editor);
 		headingSizes = view.findViewById(R.id.heading_sizes);
 		back = (ImageButton)view.findViewById(R.id.finish);
@@ -115,10 +119,52 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 		if (page != null)
 		{
 			title.setText(page.getTitle());
+			permalink.setText(page.getPermalink());
 			editor.setText(page.getBody());
 			editor.requestFocus();
 			editor.requestFocusFromTouch();
 		}
+
+		permalink.addTextChangedListener(new TextWatcher()
+		{
+			private int selection = -1;
+
+			@Override public void beforeTextChanged(CharSequence s, int start, int count, int after)
+			{
+
+			}
+
+			@Override public void onTextChanged(CharSequence s, int start, int before, int count)
+			{
+				selection = permalink.getSelectionStart();
+
+				permalink.removeTextChangedListener(this);
+				String out = s.toString();
+
+				if (!out.startsWith("/"))
+				{
+					out = "/" + out;
+				}
+
+				if (!out.endsWith("/"))
+				{
+					out += "/";
+				}
+
+				out = out.toLowerCase().replaceAll("[^0-9a-z/_]", "_");
+				permalink.setText(out);
+				permalink.addTextChangedListener(this);
+			}
+
+			@Override public void afterTextChanged(Editable s)
+			{
+				if (selection != -1)
+				{
+					permalink.setSelection(selection);
+					selection = -1;
+				}
+			}
+		});
 	}
 
 	private void toggleButtonsOff()
@@ -222,6 +268,12 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 			return;
 		}
 
+		if (TextUtils.isEmpty(permalink.getText()))
+		{
+			permalink.setError("Permalink is required");
+			return;
+		}
+
 		boolean newPage = page == null;
 		if (newPage)
 		{
@@ -229,6 +281,7 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 			PageManager.getInstance().addPage(page);
 		}
 
+		page.setPermalink(permalink.getText().toString());
 		page.setTitle(title.getText().toString());
 		String body = editor.getText().toString();
 

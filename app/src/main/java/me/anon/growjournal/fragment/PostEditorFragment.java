@@ -1,6 +1,9 @@
 package me.anon.growjournal.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 
 import me.anon.growjournal.manager.PostsManager;
 import me.anon.growjournal.model.Post;
@@ -16,6 +19,13 @@ public class PostEditorFragment extends PageEditorFragment
 		fragment.setPage(post);
 
 		return fragment;
+	}
+
+	@Override public void onActivityCreated(@Nullable Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+
+		permalink.setVisibility(View.GONE);
 	}
 
 	@Override protected void save()
