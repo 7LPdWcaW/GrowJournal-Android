@@ -226,9 +226,9 @@ function toggleDiv(source, id) {
 	{% if page.data.mediumDetails %}
 	<li><strong>medium details:</strong> {{page.data.mediumDetails}}</li>
 	{% endif %}
-	
+
 	<li><strong>planted:</strong> {{page.data.plantDate | divided_by: 1000 | date: "%Y/%M/%d %H:%m"}}</li>
-	
+
 	{% if page.data.dates %}
 		{% if page.data.dates.germination %}
 		<li><strong>germination:</strong> {{page.data.dates.germination}} days</li>
@@ -299,7 +299,7 @@ function toggleDiv(source, id) {
 
 				<ul class="notes" style="float: left; clear: none;">
 					{% if action.runoff %}
-					<li><strong>runoff:</strong> {{action.runoff}}</li>
+					<li><strong>runoff pH:</strong> {{action.runoff}}</li>
 					{% endif %}
 					{% if action.temp %}
 					<li><strong>temp:</strong> {{action.temp}}</li>

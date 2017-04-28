@@ -29,6 +29,7 @@
 		<activity android:name=".activity.ManagePostActivity" android:theme="@style/AppTheme.DarkStatus" android:windowSoftInputMode="adjustResize" />
 		<activity android:name=".activity.ManagePageActivity" android:theme="@style/AppTheme.DarkStatus" android:windowSoftInputMode="adjustResize" />
 		<activity android:name=".activity.SettingsActivity" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+		<activity android:name=".activity.PlantPageActivity" android:theme="@style/AppTheme" android:windowSoftInputMode="stateAlwaysHidden" />
 
 		<meta-data android:name="me.anon.grow.ADDON_NAME" android:value="@string/app_name" />
 		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="${versionName}" />
