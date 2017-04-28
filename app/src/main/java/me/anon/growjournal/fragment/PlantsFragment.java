@@ -14,9 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import me.anon.growjournal.R;
 import me.anon.growjournal.adapter.PlantsAdapter;
 import me.anon.growjournal.data.ProgressListener;
+import me.anon.growjournal.event.InvalidatePlantEvent;
+import me.anon.growjournal.helper.BusHelper;
 import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.receiver.GrowTrackerReceiver;
@@ -68,10 +72,23 @@ public class PlantsFragment extends Fragment
 	{
 		super.onActivityCreated(savedInstanceState);
 
+		BusHelper.getInstance().register(this);
+
 		if (savedInstanceState == null)
 		{
 			initialiseAdapter();
 		}
+	}
+
+	@Override public void onDestroy()
+	{
+		super.onDestroy();
+		BusHelper.getInstance().unregister(this);
+	}
+
+	@Subscribe public void onPlantInvalidated(InvalidatePlantEvent event)
+	{
+		initialiseAdapter();
 	}
 
 	private void initialiseAdapter()

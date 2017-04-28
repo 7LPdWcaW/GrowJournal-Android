@@ -6,6 +6,8 @@ import android.content.Intent;
 
 import java.io.File;
 
+import me.anon.growjournal.event.InvalidatePlantEvent;
+import me.anon.growjournal.helper.BusHelper;
 import me.anon.growjournal.manager.FileManager;
 import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PlantManager;
@@ -31,6 +33,7 @@ public class GrowTrackerReceiver extends BroadcastReceiver
 			PlantManager.getInstance().regeneratePages();
 
 			GitManager.getInstance().commitChanges();
+			BusHelper.getInstance().post(new InvalidatePlantEvent());
 		}
 		else if (intent.getExtras().containsKey("me.anon.grow.IMAGE_ADDED"))
 		{
@@ -38,6 +41,7 @@ public class GrowTrackerReceiver extends BroadcastReceiver
 			PlantManager.getInstance().writeImage(imagePath);
 
 			GitManager.getInstance().commitChanges();
+			BusHelper.getInstance().post(new InvalidatePlantEvent());
 		}
 		else if (intent.getExtras().containsKey("me.anon.grow.IMAGE_DELETED"))
 		{
@@ -45,6 +49,7 @@ public class GrowTrackerReceiver extends BroadcastReceiver
 			PlantManager.getInstance().deleteImage(imagePath);
 
 			GitManager.getInstance().commitChanges();
+			BusHelper.getInstance().post(new InvalidatePlantEvent());
 		}
 	}
 }
