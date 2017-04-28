@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +22,8 @@ import me.anon.growjournal.R;
 import me.anon.growjournal.activity.ManagePageActivity;
 import me.anon.growjournal.activity.ManagePostActivity;
 import me.anon.growjournal.adapter.PagesAdapter;
+import me.anon.growjournal.event.InvalidatePostEvent;
+import me.anon.growjournal.helper.BusHelper;
 import me.anon.growjournal.manager.PageManager;
 import me.anon.growjournal.manager.PostsManager;
 import me.anon.growjournal.model.Page;
@@ -56,12 +59,16 @@ public class PagesFragment extends Fragment
 	{
 		super.onActivityCreated(savedInstanceState);
 
+		BusHelper.getInstance().register(this);
+
 		if (savedInstanceState == null)
 		{
 			adapter = new PagesAdapter();
 
 			recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 			recyclerView.setAdapter(adapter);
+
+			resetAdapter();
 		}
 
 		addPost.setOnClickListener(new View.OnClickListener()
@@ -85,10 +92,14 @@ public class PagesFragment extends Fragment
 		});
 	}
 
-	@Override public void onResume()
+	@Override public void onDestroy()
 	{
-		super.onResume();
+		super.onDestroy();
+		BusHelper.getInstance().unregister(this);
+	}
 
+	public void resetAdapter()
+	{
 		if (adapter != null)
 		{
 			adapter.clearItems();
@@ -108,5 +119,10 @@ public class PagesFragment extends Fragment
 			adapter.addItems(pages);
 			adapter.notifyDataSetChanged();
 		}
+	}
+
+	@Subscribe public void onPostInvalidated(InvalidatePostEvent event)
+	{
+		resetAdapter();
 	}
 }

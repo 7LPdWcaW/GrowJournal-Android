@@ -15,9 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import me.anon.growjournal.R;
+import me.anon.growjournal.event.NewCommitEvent;
 import me.anon.growjournal.fragment.PlantsFragment;
 import me.anon.growjournal.fragment.PagesFragment;
+import me.anon.growjournal.helper.BusHelper;
 import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.view.PagerSlidingTabStrip;
@@ -34,11 +38,18 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.main_view);
 		setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
 		setTitle("Grow Journal");
+		BusHelper.getInstance().register(this);
 
 		if (savedInstanceState == null)
 		{
 			setupPages();
 		}
+	}
+
+	@Override protected void onDestroy()
+	{
+		super.onDestroy();
+		BusHelper.getInstance().unregister(this);
 	}
 
 	private void setupPages()
@@ -112,9 +123,16 @@ public class MainActivity extends AppCompatActivity
 		return installed;
 	}
 
+	@Subscribe public void onNewCommit(NewCommitEvent event)
+	{
+		invalidateOptionsMenu();
+	}
+
 	@Override public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getMenuInflater().inflate(R.menu.main, menu);
+		menu.findItem(R.id.publish).setVisible(GitManager.getInstance().hasChanges());
+
 		return true;
 	}
 
