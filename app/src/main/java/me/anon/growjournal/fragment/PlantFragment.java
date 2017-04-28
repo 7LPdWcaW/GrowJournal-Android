@@ -3,6 +3,7 @@ package me.anon.growjournal.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -15,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.anon.growjournal.R;
 import me.anon.growjournal.adapter.ActionAdapter;
+import me.anon.growjournal.adapter.ImageAdapter;
 import me.anon.growjournal.model.tracker.Plant;
 
 /**
@@ -39,6 +41,7 @@ public class PlantFragment extends Fragment
 	private RecyclerView updates;
 
 	private ActionAdapter updateAdapter;
+	private ImageAdapter photosAdapter;
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
@@ -82,5 +85,11 @@ public class PlantFragment extends Fragment
 		updateAdapter.setActions(plant, plant.getActions());
 		updates.setLayoutManager(new LinearLayoutManager(getActivity()));
 		updates.setAdapter(updateAdapter);
+
+		photosAdapter = new ImageAdapter();
+		photosAdapter.setImages(plant.getImages());
+		photos.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+		photos.setHasFixedSize(true);
+		photos.setAdapter(photosAdapter);
 	}
 }
