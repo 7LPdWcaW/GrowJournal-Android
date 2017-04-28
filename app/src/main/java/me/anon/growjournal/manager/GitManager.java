@@ -19,6 +19,8 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import lombok.Getter;
+import me.anon.growjournal.event.NewCommitEvent;
+import me.anon.growjournal.helper.BusHelper;
 
 /**
  * // TODO: Add class description
@@ -135,6 +137,20 @@ public class GitManager
 		}
 	}
 
+	public boolean hasChanges()
+	{
+		try
+		{
+			return git.status().call().hasUncommittedChanges() || !git.status().call().isClean();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
 	/**
 	 * Commits all files on the working branch
 	 */
@@ -142,7 +158,7 @@ public class GitManager
 	{
 		try
 		{
-			if (git.status().call().hasUncommittedChanges() || !git.status().call().isClean())
+			if (hasChanges())
 			{
 				git.add()
 					.addFilepattern(".")
@@ -162,6 +178,8 @@ public class GitManager
 								.setAuthor(username, email)
 								.setMessage("Commit " + new Date().toString())
 								.call();
+
+							BusHelper.getInstance().post(new NewCommitEvent());
 						}
 						catch (GitAPIException e)
 						{
@@ -188,6 +206,9 @@ public class GitManager
 			{
 				try
 				{
+					// make sure everything is committed
+					commitChanges();
+
 					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 					String remotePath = prefs.getString("git_url", "");
 					String username = prefs.getString("git_username", "");
