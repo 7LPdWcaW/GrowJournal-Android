@@ -1,5 +1,7 @@
 package me.anon.growjournal.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -258,9 +260,39 @@ public class PageEditorFragment extends Fragment implements View.OnClickListener
 				getActivity().finish();
 			}
 		}
+		else if (v == back)
+		{
+			onBackPressed();
+		}
 		else if (v == formatNumber)
 		{
 			editor.getText().insert(editor.getSelectionStart(), "\n 1. ");
+		}
+	}
+
+	public void onBackPressed()
+	{
+		if (page == null
+		|| !page.getTitle().equalsIgnoreCase(title.getText().toString())
+		|| !page.getPermalink().equalsIgnoreCase(permalink.getText().toString())
+		|| !page.getBody().equalsIgnoreCase(editor.getText().toString()))
+		{
+			new AlertDialog.Builder(getActivity())
+				.setTitle("Are you sure?")
+				.setMessage("Discard your current changes?")
+				.setPositiveButton("Discard", new DialogInterface.OnClickListener()
+				{
+					@Override public void onClick(DialogInterface dialog, int which)
+					{
+						getActivity().finish();
+					}
+				})
+				.setNegativeButton("Cancel", null)
+				.show();
+		}
+		else
+		{
+			getActivity().finish();
 		}
 	}
 

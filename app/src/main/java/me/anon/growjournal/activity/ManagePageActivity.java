@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import me.anon.growjournal.R;
+import me.anon.growjournal.fragment.PageEditorFragment;
 import me.anon.growjournal.fragment.PostEditorFragment;
 import me.anon.growjournal.helper.BundleHelper;
 import me.anon.growjournal.model.Page;
@@ -47,5 +48,14 @@ public class ManagePageActivity extends AppCompatActivity
 				return 1;
 			}
 		});
+	}
+
+	@Override public void onBackPressed()
+	{
+		Fragment fragment = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":0");
+		if (fragment instanceof PageEditorFragment)
+		{
+			((PageEditorFragment)fragment).onBackPressed();
+		}
 	}
 }
