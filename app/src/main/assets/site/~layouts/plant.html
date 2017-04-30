@@ -87,6 +87,7 @@ function ready()
 	var inputLabels = [];
 	var runoffVals = [];
 	var ppmVals = [];
+	var tempVals = [];
 
 	var action;
 	for (action in actionData)
@@ -98,6 +99,7 @@ function ready()
 			inputVals.push(actionData[action].ph);
 			runoffVals.push(actionData[action].runoff);
 			ppmVals.push(actionData[action].ppm);
+			tempVals.push(actionData[action].temp);
 		}
 	}
 
@@ -179,6 +181,34 @@ function ready()
 		]
 	};
 
+	var tempData = {
+		labels: inputLabels,
+		datasets: [
+			{
+				label: "temp",
+				fill: false,
+				lineTension: 0.1,
+				backgroundColor: "rgba(124,142,195,0.4)",
+				borderColor: "rgba(124,142,195,1)",
+				borderCapStyle: 'butt',
+				borderDash: [],
+				borderDashOffset: 0.0,
+				borderJoinStyle: 'miter',
+				pointBorderColor: "rgba(142,124,195,1)",
+				pointBackgroundColor: "#fff",
+				pointBorderWidth: 1,
+				pointHoverRadius: 5,
+				pointHoverBackgroundColor: "rgba(124,142,195,1)",
+				pointHoverBorderColor: "rgba(220,220,220,1)",
+				pointHoverBorderWidth: 2,
+				pointRadius: 1,
+				pointHitRadius: 10,
+				data: tempVals,
+				spanGaps: false,
+			}
+		]
+	};
+
 	var phChart = document.getElementById('ph').getContext("2d");
 	new Chart(phChart, {
 		type: 'line',
@@ -196,6 +226,19 @@ function ready()
 	new Chart(ppmChart, {
 		type: 'line',
 		data: ppmData,
+		options: {
+			scales: {
+				xAxes: [{
+					display: false
+				}]
+			}
+		}
+	});
+
+	var tempChart = document.getElementById('ppm').getContext("2d");
+	new Chart(tempChart, {
+		type: 'line',
+		data: tempData,
 		options: {
 			scales: {
 				xAxes: [{
@@ -260,6 +303,11 @@ function toggleDiv(source, id) {
 
 <br style="clear: both;" />
 <canvas id="ppm" width="400" height="100"></canvas>
+
+{% if page.data.medium == "HYDRO" %}
+<br style="clear: both;" />
+<canvas id="temp" width="400" height="100"></canvas>
+{% endif %}
 
 <h3>Latest updates</h3>
 <ul class="actions">

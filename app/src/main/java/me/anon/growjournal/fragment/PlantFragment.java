@@ -12,11 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+
 import lombok.Getter;
 import lombok.Setter;
 import me.anon.growjournal.R;
 import me.anon.growjournal.adapter.ActionAdapter;
 import me.anon.growjournal.adapter.ImageAdapter;
+import me.anon.growjournal.helper.StatsHelper;
 import me.anon.growjournal.model.tracker.Plant;
 
 /**
@@ -43,6 +46,10 @@ public class PlantFragment extends Fragment
 	private ActionAdapter updateAdapter;
 	private ImageAdapter photosAdapter;
 
+	private LineChart inputPh;
+	private LineChart ppm;
+	private LineChart temp;
+
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.plant_page_view, container, false);
@@ -52,6 +59,10 @@ public class PlantFragment extends Fragment
 		summary = (TextView)view.findViewById(R.id.summary);
 		photos = (RecyclerView)view.findViewById(R.id.photos_recycler);
 		updates = (RecyclerView)view.findViewById(R.id.updates_recycler);
+
+		inputPh = (LineChart)view.findViewById(R.id.input_ph);
+		ppm = (LineChart)view.findViewById(R.id.ppm);
+		temp = (LineChart)view.findViewById(R.id.temp);
 
 		photos.setNestedScrollingEnabled(false);
 		updates.setNestedScrollingEnabled(false);
@@ -91,5 +102,9 @@ public class PlantFragment extends Fragment
 		photos.setLayoutManager(new GridLayoutManager(getActivity(), 4));
 		photos.setHasFixedSize(true);
 		photos.setAdapter(photosAdapter);
+
+		StatsHelper.setInputData(plant, inputPh, new String[3]);
+		StatsHelper.setPpmData(plant, ppm, new String[3]);
+		StatsHelper.setTempData(plant, temp, new String[3]);
 	}
 }
