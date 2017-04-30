@@ -60,7 +60,6 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionHolder>
 		String summary = "";
 		if (action.getType().equalsIgnoreCase("Water"))
 		{
-			viewHolder.getCard().setCardBackgroundColor(0x9ABBDEFB);
 			StringBuilder waterStr = new StringBuilder();
 
 			if (action.getPh() != null)
