@@ -1,8 +1,10 @@
 package me.anon.growjournal.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -42,6 +45,7 @@ public class PlantFragment extends Fragment implements View.OnClickListener
 
 	@Getter @Setter private Plant plant;
 
+	protected NestedScrollView scrollView;
 	protected ImageButton back;
 
 	private TextView name;
@@ -61,6 +65,7 @@ public class PlantFragment extends Fragment implements View.OnClickListener
 	{
 		View view = inflater.inflate(R.layout.plant_page_view, container, false);
 
+		scrollView = (NestedScrollView)view.findViewById(R.id.scroll_view);
 		name = (TextView)view.findViewById(R.id.name);
 		strain = (TextView)view.findViewById(R.id.strain);
 		summary = (TextView)view.findViewById(R.id.summary);
@@ -92,6 +97,23 @@ public class PlantFragment extends Fragment implements View.OnClickListener
 
 	private void populateUi()
 	{
+		scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
+		{
+			@Override public void onScrollChanged()
+			{
+				int scrollY = scrollView.getScrollY();
+
+				name.setPivotX(0);
+				name.setPivotY(0);
+				name.setTextSize(Math.max(32, (float)(42f - (0.01 * scrollY))));
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+				{
+					getView().findViewById(R.id.toolbar).setElevation((float)Math.min(6.0, 1.0 + (0.1 * scrollY)));
+				}
+			}
+		});
+
 		name.setText(plant.getName());
 		strain.setText(plant.getStrain());
 
