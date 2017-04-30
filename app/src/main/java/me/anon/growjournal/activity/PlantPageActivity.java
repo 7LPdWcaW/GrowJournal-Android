@@ -3,7 +3,6 @@ package me.anon.growjournal.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.fragment.PlantFragment;
@@ -21,8 +20,7 @@ public class PlantPageActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.actionbar_activity_view);
-		setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+		setContentView(R.layout.activity_view);
 		setTitle("Plant");
 
 		if (savedInstanceState == null)

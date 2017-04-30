@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -29,7 +30,7 @@ import me.anon.growjournal.model.tracker.PlantMedium;
 /**
  * // TODO: Add class description
  */
-public class PlantFragment extends Fragment
+public class PlantFragment extends Fragment implements View.OnClickListener
 {
 	public static PlantFragment newInstance(Plant plant)
 	{
@@ -40,6 +41,8 @@ public class PlantFragment extends Fragment
 	}
 
 	@Getter @Setter private Plant plant;
+
+	protected ImageButton back;
 
 	private TextView name;
 	private TextView strain;
@@ -63,10 +66,13 @@ public class PlantFragment extends Fragment
 		summary = (TextView)view.findViewById(R.id.summary);
 		photos = (RecyclerView)view.findViewById(R.id.photos_recycler);
 		updates = (RecyclerView)view.findViewById(R.id.updates_recycler);
+		back = (ImageButton)view.findViewById(R.id.finish);
 
 		inputPh = (LineChart)view.findViewById(R.id.input_ph);
 		ppm = (LineChart)view.findViewById(R.id.ppm);
 		temp = (LineChart)view.findViewById(R.id.temp);
+
+		back.setOnClickListener(this);
 
 		photos.setNestedScrollingEnabled(false);
 		updates.setNestedScrollingEnabled(false);
@@ -121,6 +127,14 @@ public class PlantFragment extends Fragment
 		{
 			StatsHelper.setTempData(plant, temp, new String[3]);
 			temp.setVisibility(View.VISIBLE);
+		}
+	}
+
+	@Override public void onClick(View v)
+	{
+		if (v == back)
+		{
+			getActivity().finish();
 		}
 	}
 }

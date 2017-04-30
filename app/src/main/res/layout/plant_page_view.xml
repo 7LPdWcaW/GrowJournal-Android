@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.NestedScrollView
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:clipToPadding="false"
+	android:orientation="vertical"
 >
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:padding="12dp"
+		android:orientation="horizontal"
+		android:paddingLeft="16dp"
+		android:paddingRight="12dp"
 	>
+		<FrameLayout
+			android:layout_width="wrap_content"
+			android:layout_height="?actionBarSize"
+		>
+			<ImageButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/finish"
+				android:src="@drawable/ic_arrow_back_black_24dp"
+				android:layout_gravity="center_vertical"
+				android:background="?selectableItemBackgroundBorderless"
+			/>
+		</FrameLayout>
+
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -21,123 +36,137 @@
 			android:textStyle="bold"
 			android:textColor="#333333"
 			android:textColorHint="#616161"
+			android:layout_marginLeft="32dp"
 			android:lineSpacingMultiplier="1.0"
+			android:layout_centerVertical="true"
 			android:background="@null"
 			android:fontFamily="sans-serif-bold"
 			android:inputType="textCapWords"
 		/>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/strain"
-			android:textSize="28sp"
-			android:textStyle="bold"
-			android:textColor="#333333"
-			android:textColorHint="#616161"
-			android:lineSpacingMultiplier="1.0"
-			android:background="@null"
-			android:fontFamily="sans-serif-medium"
-			android:inputType="textCapWords"
-			android:layout_marginTop="12dp"
-		/>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/summary"
-			android:textStyle="normal"
-			android:textColor="#333333"
-			android:textColorHint="#616161"
-			android:lineSpacingMultiplier="1.0"
-			android:background="@null"
-			android:layout_marginTop="12dp"
-		/>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:textSize="20sp"
-			android:textStyle="bold"
-			android:textColor="#333333"
-			android:textColorHint="#616161"
-			android:lineSpacingMultiplier="1.0"
-			android:background="@null"
-			android:fontFamily="sans-serif-medium"
-			android:inputType="textCapWords"
-			android:text="Photos"
-			android:layout_marginTop="24dp"
-		/>
-
-		<android.support.v7.widget.RecyclerView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/photos_recycler"
-			android:nestedScrollingEnabled="false"
-			android:layout_marginTop="8dp"
-		/>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:textSize="20sp"
-			android:textStyle="bold"
-			android:textColor="#333333"
-			android:textColorHint="#616161"
-			android:lineSpacingMultiplier="1.0"
-			android:background="@null"
-			android:fontFamily="sans-serif-medium"
-			android:inputType="textCapWords"
-			android:text="Statistics"
-			android:layout_marginTop="24dp"
-		/>
-
-		<com.github.mikephil.charting.charts.LineChart
-			android:layout_width="match_parent"
-			android:layout_height="250dp"
-			android:id="@+id/input_ph"
-			android:padding="16dp"
-			android:layout_marginTop="8dp"
-		/>
-
-		<com.github.mikephil.charting.charts.LineChart
-			android:layout_width="match_parent"
-			android:layout_height="250dp"
-			android:id="@+id/ppm"
-			android:padding="16dp"
-			android:layout_marginTop="8dp"
-		/>
-
-		<com.github.mikephil.charting.charts.LineChart
-			android:layout_width="match_parent"
-			android:layout_height="250dp"
-			android:id="@+id/temp"
-			android:padding="16dp"
-			android:layout_marginTop="8dp"
-			android:visibility="gone"
-		/>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:textSize="20sp"
-			android:textStyle="bold"
-			android:textColor="#333333"
-			android:textColorHint="#616161"
-			android:lineSpacingMultiplier="1.0"
-			android:background="@null"
-			android:fontFamily="sans-serif-medium"
-			android:inputType="textCapWords"
-			android:text="Latest updates"
-			android:layout_marginTop="24dp"
-		/>
-
-		<android.support.v7.widget.RecyclerView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/updates_recycler"
-			android:nestedScrollingEnabled="false"
-			android:layout_marginTop="8dp"
-		/>
 	</LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+
+	<android.support.v4.widget.NestedScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:clipToPadding="false"
+	>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:padding="12dp"
+		>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/strain"
+				android:textSize="28sp"
+				android:textStyle="bold"
+				android:textColor="#333333"
+				android:textColorHint="#616161"
+				android:lineSpacingMultiplier="1.0"
+				android:background="@null"
+				android:fontFamily="sans-serif-medium"
+				android:inputType="textCapWords"
+			/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/summary"
+				android:textStyle="normal"
+				android:textColor="#333333"
+				android:textColorHint="#616161"
+				android:lineSpacingMultiplier="1.0"
+				android:background="@null"
+				android:layout_marginTop="12dp"
+			/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:textColor="#333333"
+				android:textColorHint="#616161"
+				android:lineSpacingMultiplier="1.0"
+				android:background="@null"
+				android:fontFamily="sans-serif-medium"
+				android:inputType="textCapWords"
+				android:text="Photos"
+				android:layout_marginTop="24dp"
+			/>
+
+			<android.support.v7.widget.RecyclerView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/photos_recycler"
+				android:nestedScrollingEnabled="false"
+				android:layout_marginTop="8dp"
+			/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:textColor="#333333"
+				android:textColorHint="#616161"
+				android:lineSpacingMultiplier="1.0"
+				android:background="@null"
+				android:fontFamily="sans-serif-medium"
+				android:inputType="textCapWords"
+				android:text="Statistics"
+				android:layout_marginTop="24dp"
+			/>
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="250dp"
+				android:id="@+id/input_ph"
+				android:padding="16dp"
+				android:layout_marginTop="8dp"
+			/>
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="250dp"
+				android:id="@+id/ppm"
+				android:padding="16dp"
+				android:layout_marginTop="8dp"
+			/>
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="250dp"
+				android:id="@+id/temp"
+				android:padding="16dp"
+				android:layout_marginTop="8dp"
+				android:visibility="gone"
+			/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:textColor="#333333"
+				android:textColorHint="#616161"
+				android:lineSpacingMultiplier="1.0"
+				android:background="@null"
+				android:fontFamily="sans-serif-medium"
+				android:inputType="textCapWords"
+				android:text="Latest updates"
+				android:layout_marginTop="24dp"
+			/>
+
+			<android.support.v7.widget.RecyclerView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/updates_recycler"
+				android:nestedScrollingEnabled="false"
+				android:layout_marginTop="8dp"
+			/>
+		</LinearLayout>
+	</android.support.v4.widget.NestedScrollView>
+</LinearLayout>
