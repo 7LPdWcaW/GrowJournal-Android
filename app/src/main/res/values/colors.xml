@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="colorPrimary">#DC0075</color>
-	<color name="colorPrimaryLight">#ff0088</color>
-	<color name="colorPrimaryDark">#b90062</color>
-	<color name="colorAccent">#006edc</color>
-	<color name="background_tab_pressed">#6633B5E5</color>
+	<color name="colorPrimary">#8f2c94</color>
+	<color name="colorPrimaryLight">#a935af</color>
+	<color name="colorPrimaryDark">#78257c</color>
+	<color name="colorAccent">#2C948F</color>
+	<color name="background_tab_pressed">#26807b</color>
 	<color name="activate_text_color">#FF666666</color>
 	<color name="deactivate_text_color">#FFCCCCCC</color>
 	<color name="transparent">#00000000</color>
