@@ -21,6 +21,7 @@ import me.anon.growjournal.adapter.ActionAdapter;
 import me.anon.growjournal.adapter.ImageAdapter;
 import me.anon.growjournal.helper.StatsHelper;
 import me.anon.growjournal.model.tracker.Plant;
+import me.anon.growjournal.model.tracker.PlantMedium;
 
 /**
  * // TODO: Add class description
@@ -105,6 +106,11 @@ public class PlantFragment extends Fragment
 
 		StatsHelper.setInputData(plant, inputPh, new String[3]);
 		StatsHelper.setPpmData(plant, ppm, new String[3]);
-		StatsHelper.setTempData(plant, temp, new String[3]);
+
+		if (plant.getMedium() == PlantMedium.HYDRO)
+		{
+			StatsHelper.setTempData(plant, temp, new String[3]);
+			temp.setVisibility(View.VISIBLE);
+		}
 	}
 }
