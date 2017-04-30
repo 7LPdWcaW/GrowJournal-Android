@@ -111,12 +111,12 @@ public class PlantFragment extends Fragment implements View.OnClickListener
 
 		updateAdapter = new ActionAdapter();
 		updateAdapter.setActions(plant, plant.getActions());
-		updates.setLayoutManager(new LinearLayoutManager(getActivity()));
+		updates.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true));
 		updates.setAdapter(updateAdapter);
 
 		photosAdapter = new ImageAdapter();
 		photosAdapter.setImages(plant.getImages());
-		photos.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+		photos.setLayoutManager(new GridLayoutManager(getActivity(), 4, LinearLayoutManager.VERTICAL, true));
 		photos.setHasFixedSize(true);
 		photos.setAdapter(photosAdapter);
 
