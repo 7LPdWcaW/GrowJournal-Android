@@ -32,6 +32,6 @@
 		<activity android:name=".activity.PlantPageActivity" android:theme="@style/AppTheme.DarkStatus" android:windowSoftInputMode="stateAlwaysHidden" />
 
 		<meta-data android:name="me.anon.grow.ADDON_NAME" android:value="@string/app_name" />
-		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="${versionName}" />
+		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="v${versionName}" />
 	</application>
 </manifest>
