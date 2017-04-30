@@ -11,6 +11,7 @@
 		android:label="@string/app_name"
 		android:icon="@mipmap/ic_launcher"
 		android:theme="@style/AppTheme"
+		android:name=".MainApplication"
 	>
 		<receiver android:name=".receiver.GrowTrackerReceiver" android:exported="true" android:enabled="true">
 			<intent-filter>
@@ -18,7 +19,19 @@
 			</intent-filter>
 		</receiver>
 
+		<activity android:name=".activity.MainActivity" android:theme="@style/AppTheme">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+
+		<activity android:name=".activity.ManagePostActivity" android:theme="@style/AppTheme.DarkStatus" android:windowSoftInputMode="adjustResize" />
+		<activity android:name=".activity.ManagePageActivity" android:theme="@style/AppTheme.DarkStatus" android:windowSoftInputMode="adjustResize" />
+		<activity android:name=".activity.SettingsActivity" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+		<activity android:name=".activity.PlantPageActivity" android:theme="@style/AppTheme.DarkStatus" android:windowSoftInputMode="stateAlwaysHidden" />
+
 		<meta-data android:name="me.anon.grow.ADDON_NAME" android:value="@string/app_name" />
-		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="${versionName}" />
+		<meta-data android:name="me.anon.grow.ADDON_VERSION" android:value="v${versionName}" />
 	</application>
 </manifest>

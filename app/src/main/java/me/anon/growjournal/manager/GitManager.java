@@ -19,6 +19,8 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import lombok.Getter;
+import me.anon.growjournal.event.NewCommitEvent;
+import me.anon.growjournal.helper.BusHelper;
 
 /**
  * // TODO: Add class description
@@ -29,12 +31,13 @@ public class GitManager
 
 	@Getter private File localRepo;
 	@Getter private Git git;
+	private Context context;
 
 	public static GitManager getInstance()
 	{
 		if (instance == null)
 		{
-			synchronized (instance)
+			synchronized (GitManager.class)
 			{
 				instance = new GitManager();
 			}
@@ -49,7 +52,7 @@ public class GitManager
 	 */
 	public void initialise(final Context context)
 	{
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		this.context = context.getApplicationContext();
 
 		localRepo = new File(context.getFilesDir() + "/site/");
 
@@ -59,7 +62,7 @@ public class GitManager
 			copyAssets("site", context);
 		}
 
- 		if (git == null)
+		if (git == null)
 		{
 			try
 			{
@@ -115,7 +118,7 @@ public class GitManager
 					InputStream in = assetManager.open(path + "/" + filename);
 					OutputStream out = new FileOutputStream(new File(localRepo.getParent(), (path + "/" + filename).replaceAll("~", "_")));
 
-					copyFile(in, out);
+					FileManager.getInstance().copyFile(in, out);
 
 					in.close();
 					out.flush();
@@ -134,21 +137,18 @@ public class GitManager
 		}
 	}
 
-	/**
-	 * Copies a file from src to dest
-	 * @param src The source input stream
-	 * @param dest The dest output stream
-	 * @throws IOException
-	 */
-	private void copyFile(InputStream src, OutputStream dest) throws IOException
+	public boolean hasChanges()
 	{
-		byte[] buffer = new byte[1024];
-		int read;
-
-		while ((read = src.read(buffer)) != -1)
+		try
 		{
-			dest.write(buffer, 0, read);
+			return git.status().call().hasUncommittedChanges() || !git.status().call().isClean();
 		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 	/**
@@ -158,22 +158,38 @@ public class GitManager
 	{
 		try
 		{
-			if (git.status().call().hasUncommittedChanges())
+			if (hasChanges())
 			{
-				String username = "";
-				String email = "";
-
 				git.add()
 					.addFilepattern(".")
 					.call();
 
-				git.commit()
-					.setAuthor(username, email)
-					.setMessage("Commit " + new Date().toString())
-					.call();
+				new Thread(new Runnable()
+				{
+					@Override public void run()
+					{
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+						String username = prefs.getString("committer_name", "");
+						String email = prefs.getString("committer_email", "");
+
+						try
+						{
+							git.commit()
+								.setAuthor(username, email)
+								.setMessage("Commit " + new Date().toString())
+								.call();
+
+							BusHelper.getInstance().post(new NewCommitEvent());
+						}
+						catch (GitAPIException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}).start();
 			}
 		}
-		catch (GitAPIException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -182,7 +198,7 @@ public class GitManager
 	/**
 	 * Pushes the current repo to its remote path
 	 */
-	public void pushChanges()
+	public void pushChanges(final Runnable callback)
 	{
 		new Thread(new Runnable()
 		{
@@ -190,15 +206,25 @@ public class GitManager
 			{
 				try
 				{
-					String remotePath = "";
-					String username = "";
-					String password = "";
+					// make sure everything is committed
+					commitChanges();
+
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+					String remotePath = prefs.getString("git_url", "");
+					String username = prefs.getString("git_username", "");
+					String password = prefs.getString("git_password", "");
 
 					git.push()
 						.setRemote(remotePath)
 						.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
 						.setPushAll()
+						.setForce(true)
 						.call();
+
+					if (callback != null)
+					{
+						callback.run();
+					}
 				}
 				catch (GitAPIException e)
 				{

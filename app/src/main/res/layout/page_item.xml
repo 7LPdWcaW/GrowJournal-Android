@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/content_container"
+		android:orientation="vertical"
+		android:background="?attr/selectableItemBackground"
+		android:padding="20dp"
+	>
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/title"
+			android:textSize="20sp"
+			android:textColor="#ff000000"
+			android:fontFamily="sans-serif-medium"
+			android:textStyle="normal"
+			tools:text="About"
+		/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/permalink"
+			android:textSize="12sp"
+			android:textStyle="italic"
+			android:layout_marginTop="8dp"
+			tools:text="/about/"
+		/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/summary"
+			android:textSize="14sp"
+			android:layout_marginTop="16dp"
+			android:maxLength="200"
+			android:ellipsize="end"
+			tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt lectus sagittis, condimentum erat ornare, accumsan leo. Sed vulputate euismod nisl. Ut gravida, nunc id porta viverra, urna massa blandit urna, a facilisis dolor elit in purus. Nulla pharetra, ante vel molestie vulputate, risus massa tempor urna, ut mollis magna metus vel ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nulla urna, egestas a vulputate egestas, mollis ut mi. Curabitur efficitur lacus in purus condimentum, id pulvinar augue fringilla. Sed accumsan viverra ex sit amet commodo. Nam non erat mattis, cursus quam quis, pulvinar elit."
+		/>
+	</LinearLayout>
+</android.support.v7.widget.CardView>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:elevation="4dp"
+	>
+		<android.support.v7.widget.Toolbar
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/toolbar"
+			android:minHeight="?attr/actionBarSize"
+			android:background="?attr/colorPrimary"
+			android:fitsSystemWindows="true"
+			app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+			app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+		/>
+
+		<me.anon.growjournal.view.PagerSlidingTabStrip
+			android:layout_width="match_parent"
+			android:layout_height="48dp"
+			android:id="@+id/tabs"
+			android:background="?colorPrimary"
+			app:pstsShouldExpand="true"
+			app:pstsTextOnly="true"
+			app:pstsIndicatorColor="#ffffff"
+			app:pstsDividerColor="@android:color/transparent"
+			app:pstsDividerWidth="0dp"
+			app:pstsIndicatorHeight="2dp"
+			app:pstsActivateTextColor="#ffffff"
+			app:pstsDeactivateTextColor="#7fffffff"
+			app:pstsActivateIconTint="#ffffff"
+		/>
+	</LinearLayout>
+
+	<android.support.v4.view.ViewPager
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/view_pager"
+	/>
+</LinearLayout>
