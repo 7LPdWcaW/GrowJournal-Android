@@ -1,5 +1,6 @@
 package me.anon.growjournal.view.holder;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +12,8 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import me.anon.growjournal.MainApplication;
 import me.anon.growjournal.R;
+import me.anon.growjournal.activity.PlantPageActivity;
+import me.anon.growjournal.helper.BundleHelper;
 import me.anon.growjournal.manager.PlantManager;
 import me.anon.growjournal.model.tracker.Plant;
 
@@ -45,5 +48,15 @@ public class PlantViewHolder extends RecyclerView.ViewHolder
 		{
 			image.setImageResource(R.drawable.default_plant);
 		}
+
+		itemView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override public void onClick(View v)
+			{
+				Intent plantPage = new Intent(v.getContext(), PlantPageActivity.class);
+				BundleHelper.getInstance().store(PlantPageActivity.class, model);
+				v.getContext().startActivity(plantPage);
+			}
+		});
 	}
 }

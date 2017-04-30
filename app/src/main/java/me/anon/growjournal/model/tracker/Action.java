@@ -17,9 +17,10 @@ import lombok.experimental.Accessors;
  * @project GrowTracker
  */
 @Accessors(prefix = {"m", ""}, chain = true)
-public class Action implements Cloneable
+public class Action
 {
 	@Getter @Setter private long date = System.currentTimeMillis();
+	@Getter @Setter private String type;
 	@Getter @Setter private String notes;
 
 	/* Empty action property */
