@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import me.anon.growjournal.R;
@@ -89,7 +92,14 @@ public class PlantFragment extends Fragment
 		StringBuilder summaryStr = new StringBuilder();
 		summaryStr.append("<b> • medium:</b> ").append(plant.getMedium().getPrintString());
 		summaryStr.append("<br /><b> • medium details</b> ").append(plant.getMediumDetails());
-		summaryStr.append("<br /><b> • planted:</b> ").append(plant.getPlantDate());
+
+		DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity());
+		DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(getActivity());
+
+		Date actionDate = new Date(plant.getPlantDate());
+		String fullDateStr = dateFormat.format(actionDate) + " " + timeFormat.format(actionDate);
+
+		summaryStr.append("<br /><b> • planted:</b> ").append(fullDateStr);
 
 		summary.setText(Html.fromHtml(summaryStr.toString()));
 
