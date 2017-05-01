@@ -1,9 +1,8 @@
 package me.anon.growjournal.activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,10 +36,9 @@ public class SettingsActivity extends AppCompatActivity
 			.commit();
 	}
 
-	public static class SettingsFragment extends PreferenceFragment
+	public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener
 	{
 		private Map siteSettings;
-    	private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
 		@Override public void onActivityCreated(@Nullable Bundle savedInstanceState)
 		{
@@ -60,7 +58,6 @@ public class SettingsActivity extends AppCompatActivity
 
 			saveSettings();
 			GitManager.getInstance().commitChanges();
-			PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(listener);
 		}
 
 		private void populateSummaries()
@@ -100,7 +97,7 @@ public class SettingsActivity extends AppCompatActivity
 			try
 			{
 				Yaml yaml = new Yaml();
-				yaml.dump(siteSettings, new FileWriter(new File(GitManager.getInstance().getLocalRepo(), "_config.yml" )));
+				yaml.dump(siteSettings, new FileWriter(new File(GitManager.getInstance().getLocalRepo(), "_config.yml")));
 			}
 			catch (Exception e)
 			{
@@ -112,32 +109,34 @@ public class SettingsActivity extends AppCompatActivity
 
 		private void createListener()
 		{
-			listener = new SharedPreferences.OnSharedPreferenceChangeListener()
+			findPreference("site_title").setOnPreferenceChangeListener(this);
+			findPreference("site_description").setOnPreferenceChangeListener(this);
+			findPreference("site_base_url").setOnPreferenceChangeListener(this);
+			findPreference("site_url").setOnPreferenceChangeListener(this);
+		}
+
+		@Override public boolean onPreferenceChange(Preference preference, Object newValue)
+		{
+			if (preference.getKey().equals("site_title"))
 			{
-				@Override public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-				{
-					if (key.equals("site_title"))
-					{
-						siteSettings.put("title", sharedPreferences.getString("site_title", ""));
-					}
-					else if (key.equals("site_description"))
-					{
-						siteSettings.put("description", sharedPreferences.getString("description", ""));
-					}
-					else if (key.equals("site_base_url"))
-					{
-						siteSettings.put("baseurl", sharedPreferences.getString("site_base_url", ""));
-					}
-					else if (key.equals("site_url"))
-					{
-						siteSettings.put("url", sharedPreferences.getString("site_url", ""));
-					}
+				siteSettings.put("title", (String)newValue);
+			}
+			else if (preference.getKey().equals("site_description"))
+			{
+				siteSettings.put("description", (String)newValue);
+			}
+			else if (preference.getKey().equals("site_base_url"))
+			{
+				siteSettings.put("baseurl", (String)newValue);
+			}
+			else if (preference.getKey().equals("site_url"))
+			{
+				siteSettings.put("url", (String)newValue);
+			}
 
-					populateSummaries();
-				}
-			};
+			populateSummaries();
 
-			PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(listener);
+			return true;
 		}
 	}
 }
