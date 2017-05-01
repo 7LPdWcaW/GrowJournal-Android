@@ -271,20 +271,6 @@ function toggleDiv(source, id) {
 	{% endif %}
 
 	<li><strong>planted:</strong> {{page.data.plantDate | divided_by: 1000 | date: "%Y/%M/%d %H:%m"}}</li>
-
-	{% if page.data.dates %}
-		{% if page.data.dates.germination %}
-		<li><strong>germination:</strong> {{page.data.dates.germination}} days</li>
-		{% endif %}
-
-		{% if page.data.dates.vegetation %}
-		<li><strong>vegetation:</strong> {{page.data.dates.vegetation}} days</li>
-		{% endif %}
-
-		{% if page.data.dates.flower %}
-		<li><strong>flower:</strong> {{page.data.dates.flower}} days</li>
-		{% endif %}
-	{% endif %}
 </ul>
 
 <h3>Photos</h3>

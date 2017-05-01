@@ -141,6 +141,12 @@ public class PlantsFragment extends Fragment
 
 				@Override public void onProgressUpdated(final int progress)
 				{
+					if (progress == 100)
+					{
+						PlantManager.getInstance().regeneratePages();
+						GitManager.getInstance().commitChanges();
+					}
+
 					getActivity().runOnUiThread(new Runnable()
 					{
 						@Override public void run()
@@ -165,8 +171,6 @@ public class PlantsFragment extends Fragment
 								{
 									progressDialog.dismiss();
 									Toast.makeText(getActivity(), "Import complete", Toast.LENGTH_SHORT).show();
-
-									GitManager.getInstance().commitChanges();
 								}
 							}
 						}

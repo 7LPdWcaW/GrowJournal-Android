@@ -60,6 +60,7 @@ public class SettingsActivity extends AppCompatActivity
 
 			saveSettings();
 			GitManager.getInstance().commitChanges();
+			PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(listener);
 		}
 
 		private void populateSummaries()
@@ -75,8 +76,8 @@ public class SettingsActivity extends AppCompatActivity
 			}
 
 			findPreference("git_username").setSummary(getPreferenceManager().getSharedPreferences().getString("git_username", ""));
-			findPreference("committer_name").setSummary(getPreferenceManager().getSharedPreferences().getString("commiter_name", ""));
-			findPreference("committer_email").setSummary(getPreferenceManager().getSharedPreferences().getString("commiter_email", ""));
+			findPreference("committer_name").setSummary(getPreferenceManager().getSharedPreferences().getString("committer_name", ""));
+			findPreference("committer_email").setSummary(getPreferenceManager().getSharedPreferences().getString("committer_email", ""));
 		}
 
 		private void loadSettings()
