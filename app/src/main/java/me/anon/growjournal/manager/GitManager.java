@@ -158,7 +158,7 @@ public class GitManager
 		{
 			Status status = git.status().call();
 			if ((status.hasUncommittedChanges() || !status.isClean())
-			&& (status.getAdded().size() > 0 || status.getRemoved().size() > 0 || status.getChanged().size() > 0 || status.getUntracked().size() > 0))
+			&& (status.getAdded().size() > 0 || status.getRemoved().size() > 0 || status.getModified().size() > 0 || status.getUntracked().size() > 0))
 			{
 
 				PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("commits", true).apply();
