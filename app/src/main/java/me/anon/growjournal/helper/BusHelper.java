@@ -1,10 +1,11 @@
 package me.anon.growjournal.helper;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 public final class BusHelper
 {
-	private final Bus BUS = new Bus();
+	private final Bus BUS = new Bus(ThreadEnforcer.MAIN);
 	private static BusHelper instance = new BusHelper();
 
 	private BusHelper()

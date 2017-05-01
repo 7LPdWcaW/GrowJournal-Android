@@ -3,7 +3,9 @@ package me.anon.growjournal.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -21,6 +23,8 @@ import java.util.Date;
 import lombok.Getter;
 import me.anon.growjournal.event.NewCommitEvent;
 import me.anon.growjournal.helper.BusHelper;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /**
  * // TODO: Add class description
@@ -137,18 +141,11 @@ public class GitManager
 		}
 	}
 
-	public boolean hasChanges()
+	public boolean hasChangesToPush()
 	{
-		try
-		{
-			return git.status().call().hasUncommittedChanges() || !git.status().call().isClean();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		return false;
+		return prefs.getBoolean("commits", false) && !TextUtils.isEmpty(prefs.getString("git_url", ""));
 	}
 
 	/**
@@ -158,17 +155,28 @@ public class GitManager
 	{
 		try
 		{
-			if (hasChanges())
+			if (git.status().call().hasUncommittedChanges() || !git.status().call().isClean())
 			{
+				PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("commits", true).apply();
+
 				git.add()
 					.addFilepattern(".")
 					.call();
+
+				final Handler mainHandler = new Handler(context.getMainLooper());
+				final Runnable callback = new Runnable()
+				{
+					@Override public void run()
+					{
+						BusHelper.getInstance().post(new NewCommitEvent());
+					}
+				};
 
 				new Thread(new Runnable()
 				{
 					@Override public void run()
 					{
-						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+						SharedPreferences prefs = getDefaultSharedPreferences(context);
 						String username = prefs.getString("committer_name", "");
 						String email = prefs.getString("committer_email", "");
 
@@ -179,7 +187,7 @@ public class GitManager
 								.setMessage("Commit " + new Date().toString())
 								.call();
 
-							BusHelper.getInstance().post(new NewCommitEvent());
+							mainHandler.post(callback);
 						}
 						catch (GitAPIException e)
 						{
@@ -209,7 +217,7 @@ public class GitManager
 					// make sure everything is committed
 					commitChanges();
 
-					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+					SharedPreferences prefs = getDefaultSharedPreferences(context);
 					String remotePath = prefs.getString("git_url", "");
 					String username = prefs.getString("git_username", "");
 					String password = prefs.getString("git_password", "");
@@ -220,6 +228,8 @@ public class GitManager
 						.setPushAll()
 						.setForce(true)
 						.call();
+
+					PreferenceManager.getDefaultSharedPreferences(context).edit().remove("commits").apply();
 
 					if (callback != null)
 					{

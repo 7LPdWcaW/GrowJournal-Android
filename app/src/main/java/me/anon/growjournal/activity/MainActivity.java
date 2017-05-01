@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity
 		checkSetup();
 	}
 
+	@Override protected void onResume()
+	{
+		super.onResume();
+		invalidateOptionsMenu();
+	}
+
 	private void checkSetup()
 	{
 		if (!PreferenceManager.getDefaultSharedPreferences(this).contains("setup"))
@@ -168,7 +174,7 @@ public class MainActivity extends AppCompatActivity
 	@Override public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getMenuInflater().inflate(R.menu.main, menu);
-		menu.findItem(R.id.publish).setVisible(GitManager.getInstance().hasChanges());
+		menu.findItem(R.id.publish).setVisible(GitManager.getInstance().hasChangesToPush());
 
 		return true;
 	}

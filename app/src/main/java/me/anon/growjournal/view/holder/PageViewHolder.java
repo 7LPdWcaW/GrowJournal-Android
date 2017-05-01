@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.activity.ManagePageActivity;
+import me.anon.growjournal.event.InvalidatePostEvent;
 import me.anon.growjournal.helper.BundleHelper;
+import me.anon.growjournal.helper.BusHelper;
+import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PageManager;
 import me.anon.growjournal.model.Page;
 
@@ -107,6 +110,9 @@ public class PageViewHolder extends RecyclerView.ViewHolder
 
 							case R.id.delete:
 								PageManager.getInstance().deletePage(model);
+								Page.deletePage(model, PageManager.folderPath);
+								GitManager.getInstance().commitChanges();
+								BusHelper.getInstance().post(new InvalidatePostEvent());
 								return true;
 						}
 

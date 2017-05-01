@@ -9,28 +9,33 @@
 		<EditTextPreference
 			android:key="git_url"
 			android:title="Git remote URL"
+			android:singleLine="true"
 			android:summary="Use https where possible"
 		/>
 
 		<EditTextPreference
 			android:key="git_username"
 			android:title="Remote username"
+			android:singleLine="true"
 		/>
 
 		<EditTextPreference
 			android:key="git_password"
 			android:password="true"
+			android:singleLine="true"
 			android:title="Remote password"
 		/>
 
 		<EditTextPreference
 			android:key="committer_name"
 			android:title="Committer name"
+			android:singleLine="true"
 		/>
 
 		<EditTextPreference
 			android:key="committer_email"
 			android:title="Committer email"
+			android:singleLine="true"
 		/>
 	</PreferenceCategory>
 

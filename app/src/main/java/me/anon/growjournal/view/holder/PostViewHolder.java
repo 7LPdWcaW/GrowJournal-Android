@@ -19,7 +19,10 @@ import java.util.GregorianCalendar;
 
 import me.anon.growjournal.R;
 import me.anon.growjournal.activity.ManagePostActivity;
+import me.anon.growjournal.event.InvalidatePostEvent;
 import me.anon.growjournal.helper.BundleHelper;
+import me.anon.growjournal.helper.BusHelper;
+import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PostsManager;
 import me.anon.growjournal.model.Post;
 
@@ -121,6 +124,9 @@ public class PostViewHolder extends RecyclerView.ViewHolder
 
 							case R.id.delete:
 								PostsManager.getInstance().deletePost(model);
+								Post.deletePost(model, PostsManager.folderPath);
+								GitManager.getInstance().commitChanges();
+								BusHelper.getInstance().post(new InvalidatePostEvent());
 								return true;
 						}
 

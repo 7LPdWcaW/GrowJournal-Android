@@ -106,8 +106,6 @@ public class SettingsActivity extends AppCompatActivity
 			{
 				@Override public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
 				{
-					populateSummaries();
-
 					if (key.equals("site_title"))
 					{
 						siteSettings.put("title", sharedPreferences.getString("site_title", ""));
@@ -124,6 +122,8 @@ public class SettingsActivity extends AppCompatActivity
 					{
 						siteSettings.put("url", sharedPreferences.getString("site_url", ""));
 					}
+
+					populateSummaries();
 				}
 			};
 
