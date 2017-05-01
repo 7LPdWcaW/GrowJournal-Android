@@ -1,5 +1,7 @@
 package me.anon.growjournal.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -59,6 +61,32 @@ public class SetupActivity extends AppCompatActivity
 				pull();
 			}
 		});
+	}
+
+	@Override public void onBackPressed()
+	{
+		new AlertDialog.Builder(this)
+			.setTitle("Are you sure?")
+			.setMessage("Cancel the import? A new empty repository will be created instead")
+			.setPositiveButton("Exit", new DialogInterface.OnClickListener()
+			{
+				@Override public void onClick(DialogInterface dialog, int which)
+				{
+					PreferenceManager.getDefaultSharedPreferences(SetupActivity.this).edit()
+						.putBoolean("setup", true)
+						.apply();
+					
+					FileManager.getInstance().deleteRecursive(new File(getFilesDir() + "/site/"));
+					((MainApplication)getApplication()).initialise();
+
+					Intent main = new Intent(SetupActivity.this, MainActivity.class);
+					main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					startActivity(main);
+					finish();
+				}
+			})
+			.setNegativeButton("Cancel", null)
+			.show();
 	}
 
 	private boolean integrityCheck()
