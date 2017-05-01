@@ -39,6 +39,7 @@ public class PagesFragment extends Fragment
 	}
 
 	private RecyclerView recyclerView;
+	private View empty;
 	private PagesAdapter adapter;
 	private FloatingActionMenu actionMenu;
 	private FloatingActionButton addPost;
@@ -48,6 +49,7 @@ public class PagesFragment extends Fragment
 	{
 		View view = inflater.inflate(R.layout.pages_view, container, false);
 		recyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
+		empty = view.findViewById(R.id.empty);
 		actionMenu = (FloatingActionMenu)view.findViewById(R.id.menu);
 		addPost = (FloatingActionButton)view.findViewById(R.id.new_post);
 		addPage = (FloatingActionButton)view.findViewById(R.id.new_page);
@@ -118,6 +120,22 @@ public class PagesFragment extends Fragment
 			adapter.addItem("Pages");
 			adapter.addItems(pages);
 			adapter.notifyDataSetChanged();
+
+			checkEmpty();
+		}
+	}
+
+	private void checkEmpty()
+	{
+		if (adapter.getItemCount() == 2)
+		{
+			recyclerView.setVisibility(View.GONE);
+			empty.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			recyclerView.setVisibility(View.VISIBLE);
+			empty.setVisibility(View.GONE);
 		}
 	}
 

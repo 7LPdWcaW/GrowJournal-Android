@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity
 				{
 					@Override public void onClick(DialogInterface dialog, int which)
 					{
+						PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit()
+							.putBoolean("setup", true)
+							.apply();
+
 						((MainApplication)getApplication()).initialise();
 						setupPages();
 					}
