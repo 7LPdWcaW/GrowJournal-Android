@@ -62,18 +62,19 @@ public class PlantManager
 			{
 				synchronized (PlantManager.this)
 				{
-					float total = 0;
+					int total = 0;
 					for (Plant plant : plants)
 					{
 						total += plant.getImages().size();
 					}
 
+					int lastProgress = -1;
+					float index = 0;
 					for (Plant plant : plants)
 					{
-						synchronized (PlantManager.this)
+						for (String imagePath : plant.getImages())
 						{
-							float index = 0;
-							for (String imagePath : plant.getImages())
+							synchronized (PlantManager.this)
 							{
 								String[] folders = imagePath.split("/");
 								String filePath = folders[folders.length - 2] + "/" + folders[folders.length - 1];
@@ -86,7 +87,13 @@ public class PlantManager
 
 								index++;
 
-								progressListener.onProgressUpdated((int)((index / total) * 100f));
+								float progress = (int)((index / (float)total) * 100f);
+
+								if ((int)progress > lastProgress)
+								{
+									lastProgress = (int)progress;
+									progressListener.onProgressUpdated(lastProgress);
+								}
 							}
 						}
 					}
@@ -159,6 +166,8 @@ public class PlantManager
 
 					FileManager.getInstance().writeFile(pagesPath + JekyllUtils.urlCase(plant.get("name").getAsString()) + ".md", plantPage.toString());
 				}
+
+				GitManager.getInstance().commitChanges();
 			}
 		}
 		catch (FileNotFoundException e)

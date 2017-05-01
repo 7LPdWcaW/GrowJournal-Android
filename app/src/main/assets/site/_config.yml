@@ -3,7 +3,7 @@ title:       My Grow Journal
 email:
 author:
 description: "My humble grow journal"
-baseurl:     "Base URL is the name of your repository"
+baseurl:     "Base URL is the name of your repository eg /GrowLog"
 url:         "URL is the git url eg https://7lpdwcaw.github.io"
 date_format: "%b %-d, %Y"
 
