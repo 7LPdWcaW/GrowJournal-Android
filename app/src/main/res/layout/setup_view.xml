@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+>
+	<android.support.v7.widget.Toolbar
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/toolbar"
+		android:minHeight="?attr/actionBarSize"
+		android:background="?attr/colorPrimary"
+		android:fitsSystemWindows="true"
+		app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+		app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+	/>
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+	>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:clipToPadding="false"
+			android:padding="12dp"
+		>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="Enter your git details"
+				android:textSize="18sp"
+				android:layout_gravity="center_horizontal"
+				android:gravity="center_horizontal"
+			/>
+
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/remote_url"
+				android:hint="Remote URL"
+				android:singleLine="true"
+				android:layout_marginTop="24dp"
+			/>
+
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/remote_username"
+				android:hint="Remote username"
+				android:singleLine="true"
+				android:layout_marginTop="12dp"
+			/>
+
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/remote_password"
+				android:hint="Remote password"
+				android:inputType="textPassword"
+				android:singleLine="true"
+				android:layout_marginTop="12dp"
+			/>
+
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/remote_branch"
+				android:hint="Branch name"
+				android:singleLine="true"
+				android:layout_marginTop="12dp"
+			/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/pull"
+				android:text="Pull repository"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="24dp"
+			/>
+
+			<ProgressBar
+				android:layout_width="48dp"
+				android:layout_height="48dp"
+				android:id="@+id/progress"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="8dp"
+				android:visibility="gone"
+				style="@style/Widget.AppCompat.ProgressBar"
+			/>
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
