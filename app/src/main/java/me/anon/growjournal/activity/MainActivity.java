@@ -1,9 +1,12 @@
 package me.anon.growjournal.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,10 +20,11 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import me.anon.growjournal.MainApplication;
 import me.anon.growjournal.R;
 import me.anon.growjournal.event.NewCommitEvent;
-import me.anon.growjournal.fragment.PlantsFragment;
 import me.anon.growjournal.fragment.PagesFragment;
+import me.anon.growjournal.fragment.PlantsFragment;
 import me.anon.growjournal.helper.BusHelper;
 import me.anon.growjournal.manager.GitManager;
 import me.anon.growjournal.manager.PlantManager;
@@ -43,6 +47,35 @@ public class MainActivity extends AppCompatActivity
 		if (savedInstanceState == null)
 		{
 			setupPages();
+		}
+
+		checkSetup();
+	}
+
+	private void checkSetup()
+	{
+		if (!PreferenceManager.getDefaultSharedPreferences(this).contains("setup"))
+		{
+			new AlertDialog.Builder(this)
+				.setTitle("Welcome!")
+				.setMessage("Welcome to GrowJournal, do you have an existing git repository to import?")
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+				{
+					@Override public void onClick(DialogInterface dialog, int which)
+					{
+						Intent setup = new Intent(MainActivity.this, SetupActivity.class);
+						startActivity(setup);
+					}
+				})
+				.setNegativeButton("No", new DialogInterface.OnClickListener()
+				{
+					@Override public void onClick(DialogInterface dialog, int which)
+					{
+						((MainApplication)getApplication()).initialise();
+						setupPages();
+					}
+				})
+				.show();
 		}
 	}
 
