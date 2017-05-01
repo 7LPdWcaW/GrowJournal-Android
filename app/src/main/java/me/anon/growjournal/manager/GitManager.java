@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -155,8 +156,11 @@ public class GitManager
 	{
 		try
 		{
-			if (git.status().call().hasUncommittedChanges() || !git.status().call().isClean())
+			Status status = git.status().call();
+			if (status.hasUncommittedChanges() || !status.isClean()
+			&& (status.getAdded().size() > 0 || status.getRemoved().size() > 0 || status.getChanged().size() > 0 || status.getUntracked().size() > 0))
 			{
+
 				PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("commits", true).apply();
 
 				git.add()
