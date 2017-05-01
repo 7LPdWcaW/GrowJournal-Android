@@ -157,7 +157,7 @@ public class GitManager
 		try
 		{
 			Status status = git.status().call();
-			if (status.hasUncommittedChanges() || !status.isClean()
+			if ((status.hasUncommittedChanges() || !status.isClean())
 			&& (status.getAdded().size() > 0 || status.getRemoved().size() > 0 || status.getChanged().size() > 0 || status.getUntracked().size() > 0))
 			{
 
