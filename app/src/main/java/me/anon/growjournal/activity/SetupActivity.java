@@ -2,8 +2,10 @@ package me.anon.growjournal.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -40,7 +42,8 @@ public class SetupActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.setup_view);
-		setTitle("Setup");
+		setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+		getSupportActionBar().setTitle("Setup");
 
 		remoteUrl = (EditText)findViewById(R.id.remote_url);
 		remoteUsername = (EditText)findViewById(R.id.remote_username);
@@ -56,6 +59,19 @@ public class SetupActivity extends AppCompatActivity
 				pull();
 			}
 		});
+	}
+
+	private boolean integrityCheck()
+	{
+		File siteFolder = new File(getFilesDir() + "/site/");
+
+		if (siteFolder.list().length == 0) return false;
+		if (!new File(siteFolder, "_config.yml").exists()) return false;
+
+		new File(siteFolder, "/_pages/").mkdirs();
+		new File(siteFolder, "/_posts/").mkdirs();
+
+		return true;
 	}
 
 	private void pull()
@@ -82,14 +98,28 @@ public class SetupActivity extends AppCompatActivity
 					{
 						@Override public void run()
 						{
-							((MainApplication)getApplication()).initialise();
+							if (integrityCheck())
+							{
+								PreferenceManager.getDefaultSharedPreferences(SetupActivity.this).edit()
+									.putString("git_url", remoteUrl.getText().toString())
+									.putString("git_username", remoteUsername.getText().toString())
+									.putString("git_password", remotePassword.getText().toString())
+									.putBoolean("setup", true)
+									.apply();
 
-							Intent main = new Intent(SetupActivity.this, MainActivity.class);
-							main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-							startActivity(main);
-							finish();
+								((MainApplication)getApplication()).initialise();
 
-							Toast.makeText(SetupActivity.this, "Repository successfully cloned", Toast.LENGTH_LONG).show();
+								Intent main = new Intent(SetupActivity.this, MainActivity.class);
+								main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+								startActivity(main);
+								finish();
+
+								Toast.makeText(SetupActivity.this, "Repository successfully cloned", Toast.LENGTH_LONG).show();
+							}
+							else
+							{
+								Toast.makeText(SetupActivity.this, "Your repository did not look valid", Toast.LENGTH_LONG).show();
+							}
 						}
 					});
 				}
