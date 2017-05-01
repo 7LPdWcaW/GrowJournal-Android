@@ -62,4 +62,12 @@
 			/>
 		</LinearLayout>
 	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:background="#dedede"
+		android:layout_marginLeft="20dp"
+		android:layout_gravity="bottom"
+	/>
 </android.support.v7.widget.CardView>

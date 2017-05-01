@@ -47,4 +47,12 @@
 			tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt lectus sagittis, condimentum erat ornare, accumsan leo. Sed vulputate euismod nisl. Ut gravida, nunc id porta viverra, urna massa blandit urna, a facilisis dolor elit in purus. Nulla pharetra, ante vel molestie vulputate, risus massa tempor urna, ut mollis magna metus vel ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nulla urna, egestas a vulputate egestas, mollis ut mi. Curabitur efficitur lacus in purus condimentum, id pulvinar augue fringilla. Sed accumsan viverra ex sit amet commodo. Nam non erat mattis, cursus quam quis, pulvinar elit."
 		/>
 	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:background="#dedede"
+		android:layout_marginLeft="20dp"
+		android:layout_gravity="bottom"
+	/>
 </android.support.v7.widget.CardView>

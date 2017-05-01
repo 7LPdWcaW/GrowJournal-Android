@@ -94,6 +94,12 @@ public class PagesFragment extends Fragment
 		});
 	}
 
+	@Override public void onResume()
+	{
+		super.onResume();
+		resetAdapter();
+	}
+
 	@Override public void onDestroy()
 	{
 		super.onDestroy();
