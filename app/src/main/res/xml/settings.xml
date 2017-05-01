@@ -60,7 +60,7 @@
 		<EditTextPreference
 			android:key="site_base_url"
 			android:title="Base URL"
-			android:summary="Base URL is the name of your repository"
+			android:summary="Base URL is the name of your repository eg /GrowLog"
 			android:defaultValue="@string/site_base_url"
 		/>
 

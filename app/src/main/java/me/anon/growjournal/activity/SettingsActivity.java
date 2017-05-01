@@ -68,6 +68,15 @@ public class SettingsActivity extends AppCompatActivity
 			findPreference("site_description").setSummary((String)siteSettings.get("description"));
 			findPreference("site_base_url").setSummary((String)siteSettings.get("baseurl"));
 			findPreference("site_url").setSummary((String)siteSettings.get("url"));
+
+			if (getPreferenceManager().getSharedPreferences().getString("git_url", null) != null)
+			{
+				findPreference("git_url").setSummary(getPreferenceManager().getSharedPreferences().getString("git_url", ""));
+			}
+
+			findPreference("git_username").setSummary(getPreferenceManager().getSharedPreferences().getString("git_username", ""));
+			findPreference("committer_name").setSummary(getPreferenceManager().getSharedPreferences().getString("commiter_name", ""));
+			findPreference("committer_email").setSummary(getPreferenceManager().getSharedPreferences().getString("commiter_email", ""));
 		}
 
 		private void loadSettings()
