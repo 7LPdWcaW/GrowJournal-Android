@@ -171,15 +171,15 @@ public class PlantsFragment extends Fragment
 								{
 									progressDialog.dismiss();
 									Toast.makeText(getActivity(), "Import complete", Toast.LENGTH_SHORT).show();
+
+									adapter.notifyDataSetChanged();
+									checkState();
 								}
 							}
 						}
 					});
 				}
 			});
-
-			adapter.notifyDataSetChanged();
-			checkState();
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);

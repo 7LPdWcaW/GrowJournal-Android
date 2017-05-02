@@ -80,7 +80,7 @@ public class PlantManager
 								String filePath = folders[folders.length - 2] + "/" + folders[folders.length - 1];
 								String thumbPath = folders[folders.length - 2] + "/thumb/" + folders[folders.length - 1];
 
-								if (!new File(imagesPath, filePath).exists() || !new File(imagePath, thumbPath).exists())
+//								if (!new File(imagesPath, filePath).exists() || !new File(imagePath, thumbPath).exists())
 								{
 									writeImage(imagePath);
 								}
@@ -114,7 +114,7 @@ public class PlantManager
 		try
 		{
 			// resize and compress image
-			Bitmap highRes = BitmapUtils.getBitmap(imagePath, 1200000);
+			Bitmap highRes = BitmapUtils.getBitmap(imagePath, 1500, 1500);
 
 			if (highRes != null)
 			{
@@ -122,11 +122,11 @@ public class PlantManager
 				highRes.recycle();
 			}
 
-			Bitmap thumb = BitmapUtils.getBitmap(imagePath, 60000);
+			Bitmap thumb = BitmapUtils.getBitmap(imagePath, 480, 480);
 
 			if (thumb != null)
 			{
-				thumb.compress(Bitmap.CompressFormat.JPEG, 70, new FileOutputStream(imagesPath + thumbPath));
+				thumb.compress(Bitmap.CompressFormat.JPEG, 60, new FileOutputStream(imagesPath + thumbPath));
 				thumb.recycle();
 			}
 		}
@@ -162,7 +162,7 @@ public class PlantManager
 					plantPage.append("layout: plant\r\n");
 					plantPage.append("title: ").append(plant.get("name").getAsString()).append("\r\n");
 					plantPage.append("permalink: \"/plants/").append(JekyllUtils.urlCase(plant.get("name").getAsString())).append("/\"\r\n");
-					plantPage.append("data: ").append(plant.toString()).append("\"\r\n---\r\n");
+					plantPage.append("data: ").append(plant.toString()).append("\r\n---\r\n");
 
 					FileManager.getInstance().writeFile(pagesPath + JekyllUtils.urlCase(plant.get("name").getAsString()) + ".md", plantPage.toString());
 				}
