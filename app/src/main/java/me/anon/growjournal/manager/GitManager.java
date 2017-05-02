@@ -11,6 +11,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -37,6 +38,7 @@ public class GitManager
 	@Getter private File localRepo;
 	@Getter private Git git;
 	private Context context;
+	private volatile boolean isPushing = false;
 
 	public static GitManager getInstance()
 	{
@@ -65,6 +67,7 @@ public class GitManager
 		{
 			createNewRepo();
 			copyAssets("site", context);
+			commitChanges();
 		}
 
 		if (git == null)
@@ -74,6 +77,8 @@ public class GitManager
 				git = Git.init()
 					.setDirectory(new File(localRepo.getAbsolutePath()))
 					.call();
+
+				switchToDevelop();
 			}
 			catch (GitAPIException e)
 			{
@@ -87,6 +92,27 @@ public class GitManager
 		}
 	}
 
+	private void switchToDevelop()
+	{
+		new Thread(new Runnable()
+		{
+			@Override public void run()
+			{
+				try
+				{
+					git.checkout()
+						.setName("develop")
+						.setCreateBranch(true)
+						.call();
+				}
+				catch (GitAPIException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
 	/**
 	 * Creates a new bare repository
 	 */
@@ -98,8 +124,13 @@ public class GitManager
 		{
 			Repository repo = FileRepositoryBuilder.create(new File(localRepo, ".git"));
 			git = Git.wrap(repo);
+
+			git.checkout()
+				.setName("develop")
+				.setCreateBranch(true)
+				.call();
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -144,9 +175,14 @@ public class GitManager
 
 	public boolean hasChangesToPush()
 	{
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		if (context != null)
+		{
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		return prefs.getBoolean("commits", false) && !TextUtils.isEmpty(prefs.getString("git_url", ""));
+			return prefs.getBoolean("commits", false) && !TextUtils.isEmpty(prefs.getString("git_url", ""));
+		}
+
+		return false;
 	}
 
 	/**
@@ -212,39 +248,67 @@ public class GitManager
 	 */
 	public void pushChanges(final Runnable callback)
 	{
-		new Thread(new Runnable()
+		if (!isPushing)
 		{
-			@Override public void run()
+			isPushing = true;
+
+			new Thread(new Runnable()
 			{
-				try
+				@Override public void run()
 				{
-					// make sure everything is committed
-					commitChanges();
-
-					SharedPreferences prefs = getDefaultSharedPreferences(context);
-					String remotePath = prefs.getString("git_url", "");
-					String username = prefs.getString("git_username", "");
-					String password = prefs.getString("git_password", "");
-
-					git.push()
-						.setRemote(remotePath)
-						.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
-						.setPushAll()
-						.setForce(true)
-						.call();
-
-					PreferenceManager.getDefaultSharedPreferences(context).edit().remove("commits").apply();
-
-					if (callback != null)
+					try
 					{
-						callback.run();
+						// make sure everything is committed
+						commitChanges();
+
+						git.checkout()
+							.setName("master")
+							.call();
+
+						try
+						{
+							git.merge()
+								.include(git.getRepository().getRef("develop"))
+								.setStrategy(MergeStrategy.THEIRS)
+								.setSquash(true)
+								.call();
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+
+						SharedPreferences prefs = getDefaultSharedPreferences(context);
+						String remotePath = prefs.getString("git_url", "");
+						String username = prefs.getString("git_username", "");
+						String password = prefs.getString("git_password", "");
+
+						git.push()
+							.setRemote(remotePath)
+							.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
+							.setPushAll()
+							.setForce(true)
+							.call();
+
+						PreferenceManager.getDefaultSharedPreferences(context).edit().remove("commits").apply();
+
+						git.checkout()
+							.setName("develop")
+							.call();
+
+						if (callback != null)
+						{
+							callback.run();
+						}
 					}
+					catch (GitAPIException e)
+					{
+						e.printStackTrace();
+					}
+
+					isPushing = false;
 				}
-				catch (GitAPIException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}).start();
+			}).start();
+		}
 	}
 }
