@@ -2,7 +2,7 @@
 <a href="{{ site.url }}{{ site.baseurl }}/plants/">Plants</a>
 
 {% for page in site.pages %}
-    {% if page.tags contains "about" %}
-        <a href="{{ site.url }}{{ site.baseurl }}/{{ page.url }}">{{ page.title }}</a>
+	{% if page.tags contains "page" %}
+    <a style="font-size: 20px;" href="{{ site.url }}{{ site.baseurl }}/{{ page.url }}">{{ page.title }}</a>
     {% endif %}
-{% endfor %} 
+{% endfor %}
