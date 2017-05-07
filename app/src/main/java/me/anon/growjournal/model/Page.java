@@ -71,6 +71,7 @@ public class Page
 		body.append("\r\ntitle: ").append(page.getTitle());
 		body.append("\r\npermalink: ").append(page.getPermalink());
 		body.append("\r\nlayout: ").append(page.getLayout());
+		body.append("\r\ntags: page");
 
 		if (!TextUtils.isEmpty(page.getData()))
 		{
