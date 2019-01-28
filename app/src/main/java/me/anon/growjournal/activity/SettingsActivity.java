@@ -36,7 +36,7 @@ public class SettingsActivity extends AppCompatActivity
 			.commit();
 	}
 
-	public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener
+	public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener
 	{
 		private Map siteSettings;
 
@@ -113,6 +113,7 @@ public class SettingsActivity extends AppCompatActivity
 			findPreference("site_description").setOnPreferenceChangeListener(this);
 			findPreference("site_base_url").setOnPreferenceChangeListener(this);
 			findPreference("site_url").setOnPreferenceChangeListener(this);
+			findPreference("pull").setOnPreferenceClickListener(this);
 		}
 
 		@Override public boolean onPreferenceChange(Preference preference, Object newValue)
@@ -137,6 +138,23 @@ public class SettingsActivity extends AppCompatActivity
 			populateSummaries();
 
 			return true;
+		}
+
+		@Override public boolean onPreferenceClick(Preference preference)
+		{
+			if (preference.getKey().equalsIgnoreCase("pull"))
+			{
+				GitManager.getInstance().pullChanges(new Runnable()
+				{
+					@Override public void run()
+					{
+						Toast.makeText(getActivity(), "All changes pulled", Toast.LENGTH_SHORT).show();
+					}
+				});
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

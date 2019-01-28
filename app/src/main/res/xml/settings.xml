@@ -37,6 +37,12 @@
 			android:title="Committer email"
 			android:singleLine="true"
 		/>
+
+		<Preference
+			android:key="pull"
+			android:title="Pull changes"
+			android:summary="Pull changes on remote master branch"
+		/>
 	</PreferenceCategory>
 
 	<PreferenceCategory

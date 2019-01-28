@@ -39,6 +39,7 @@ public class GitManager
 	@Getter private Git git;
 	private Context context;
 	private volatile boolean isPushing = false;
+	private volatile boolean isPulling = false;
 
 	public static GitManager getInstance()
 	{
@@ -291,6 +292,73 @@ public class GitManager
 							.call();
 
 						PreferenceManager.getDefaultSharedPreferences(context).edit().remove("commits").apply();
+
+						git.checkout()
+							.setName("develop")
+							.call();
+
+						if (callback != null)
+						{
+							callback.run();
+						}
+					}
+					catch (GitAPIException e)
+					{
+						e.printStackTrace();
+					}
+
+					isPushing = false;
+				}
+			}).start();
+		}
+	}
+
+	/**
+	 * Pulls changes from remote master branch
+	 * @param callback
+	 */
+	public void pullChanges(final Runnable callback)
+	{
+		if (!isPulling)
+		{
+			isPulling = true;
+
+			new Thread(new Runnable()
+			{
+				@Override public void run()
+				{
+					try
+					{
+						// make sure everything is committed
+						commitChanges();
+
+						git.checkout()
+							.setName("master")
+							.call();
+
+						try
+						{
+							git.merge()
+								.include(git.getRepository().getRef("develop"))
+								.setStrategy(MergeStrategy.THEIRS)
+								.setSquash(true)
+								.call();
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+
+						SharedPreferences prefs = getDefaultSharedPreferences(context);
+						String remotePath = prefs.getString("git_url", "");
+						String username = prefs.getString("git_username", "");
+						String password = prefs.getString("git_password", "");
+
+						git.pull()
+							.setRemote(remotePath)
+							.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
+							.setStrategy(MergeStrategy.THEIRS)
+							.call();
 
 						git.checkout()
 							.setName("develop")
